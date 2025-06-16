@@ -1,0 +1,25 @@
+## 영향력 줄다리기
+je_group_influence_struggle = {
+
+}
+
+## 근대화
+je_group_westernization = {
+
+}
+
+## 반동 저널
+je_group_backlash = {
+
+}
+
+## 이권 침탈 저널
+je_group_imperialism = {
+
+}
+
+## 첩보 관련 저널
+
+je_group_intelligence = {
+
+}
