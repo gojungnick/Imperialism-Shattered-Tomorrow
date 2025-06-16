@@ -1,0 +1,3 @@
+GLOBAL = {
+    IST_button_initialize = yes
+}

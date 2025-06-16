@@ -1,0 +1,25 @@
+tab_button = {
+    if = {
+        limit = {
+            has_variable = $tab_variable$
+            var:$tab_variable$ < $tab_counts$
+        }
+        change_variable = {
+            name = $tab_variable$
+            add = 1
+        }
+    }
+    else = {
+        set_variable = {
+            name = $tab_variable$
+            value = 1
+        }
+    }
+}
+
+IST_button_initialize = {
+    add_to_global_variable_list = {
+        name = custom_button_list_flag
+        target = flag:IST_technology_sidebar_button
+    }
+}

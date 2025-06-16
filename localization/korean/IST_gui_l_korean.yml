@@ -1,0 +1,18 @@
+﻿l_korean:
+  IST_technology_sidebar_button: "IST_technology_sidebar_button"
+  IST_technology_sidebar_button_desc: "기술"
+  IST_technology_sidebar_button_tooltip: "기술 연구 툴팁 (TODO)"
+
+  IST_technology_panel_title:0 "기술 연구"
+  IST_technology_overview_panel:0 "개요"
+  IST_technology_overview_panel_tooltip:0 "개요 툴팁 (TODO)"
+
+  IST_technology_production_panel:0 "생산"
+  IST_technology_production_panel_tooltip:0 "생산 툴팁 (TODO)"
+   
+  IST_technology_military_panel:0 "군사"
+  IST_technology_military_panel_tooltip:0 "군사 툴팁 (TODO)"
+   
+  IST_technology_society_panel:0 "사회"
+  IST_technology_society_panel_tooltip:0 "사회 툴팁 (TODO)"
+   

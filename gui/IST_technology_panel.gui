@@ -1,0 +1,155 @@
+@panel_width_minus_10 = 530			
+@panel_width = 540  				
+@panel_width_half = 270				
+@panel_width_plus_10 = 550  		
+@panel_width_plus_14 = 554			
+@panel_width_plus_14_half = 277		
+@panel_width_plus_20 = 560			
+@panel_width_plus_30 = 570			
+@panel_width_plus_70 = 610			
+
+types IST_technology_panel_types {
+
+    type IST_technology_panel = default_block_window {
+        name = "IST_technology_panel"
+        datacontext = "[GetMetaPlayer.GetPlayedOrObservedCountry]"
+
+        visible = "[GetVariableSystem.HasValue('com_open_window', 'IST_technology_sidebar_button')]"
+
+        blockoverride "animation_state_block" {
+            state = {
+                name = _show
+                on_start = "[InformationPanelBar.ClosePanel]"
+                on_start = "[MapListPanelManager.CloseCurrentPanel]"
+                start_sound = {
+                    soundeffect = "event:/SFX/UI/SideBar/technology"
+                }
+                # on_finish = "[GetScriptedGui('개혁도 계산 SGUI').Execute(GuiScope.SetRoot(Country.MakeScope).End)]"
+            }
+
+            state = {
+                name = _hide
+                start_sound = {
+                    soundeffect = "event:/SFX/UI/SideBar/technology_stop"
+                }
+            }
+        }
+
+        blockoverride "window_header_name"
+        {
+            text = IST_technology_panel_title
+            default_format = "#bold"
+        }
+
+        blockoverride "header_back_button" {
+            onclick = "[GetVariableSystem.Clear('com_open_window')]"
+        }
+
+        blockoverride "header_close_button" {
+            onclick = "[GetVariableSystem.Clear('com_open_window')]"
+        }
+
+
+        blockoverride "fixed_top"
+        {
+            tab_buttons = {
+                # Researcher
+                blockoverride "first_button" {
+                    text = IST_technology_overview_panel
+                }
+                blockoverride "first_button_tooltip" {
+                    tooltip = IST_technology_overview_panel_tooltip
+                }
+                blockoverride "first_button_click" {
+                    onclick = "[GetScriptedGui('IST_technology_overview_tab_sgui').Execute(GuiScope.SetRoot(Country.MakeScope).End)]"
+                }
+                blockoverride "first_button_visibility" {
+                    visible = "[GetScriptedGui('IST_technology_overview_tab_sgui').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+                }
+                blockoverride "first_button_visibility_checked" {
+                    visible = "[Not(GetScriptedGui('IST_technology_overview_tab_sgui').IsShown(GuiScope.SetRoot(Country.MakeScope).End))]"
+                }
+                blockoverride "first_button_selected" {
+                    text = IST_technology_overview_panel
+                }
+                blockoverride "first_button_background" {
+                    background = {
+                        margin = { 0 -2 }
+                        using = fade_bottom_entry_fancy_header_colored
+                        using = Color_Orange
+                        alpha = 0.5
+                    }
+                }
+                blockoverride "first_button_background_selected" {
+                    background = {
+                        using = fade_bottom_entry_fancy_header_colored
+                        using = Color_Orange
+                        alpha = 0.5
+                    }
+                }
+
+                # Production
+                blockoverride "second_button" {
+                    text = "IST_technology_production_panel"
+                }
+                blockoverride "second_button_tooltip" {
+                    tooltip = "IST_technology_production_panel_tooltip"
+                }
+                blockoverride "second_button_click" {
+                    onclick = "[GetScriptedGui('IST_technology_production_tab_sgui').Execute(GuiScope.SetRoot(Country.MakeScope).End)]"
+                }
+                blockoverride "second_button_visibility" {
+                    visible = "[GetScriptedGui('IST_technology_production_tab_sgui').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+                }
+                blockoverride "second_button_visibility_checked" {
+                    visible = "[Not(GetScriptedGui('IST_technology_production_tab_sgui').IsShown(GuiScope.SetRoot(Country.MakeScope).End))]"
+                }
+                blockoverride "second_button_selected" {
+                    text = "IST_technology_production_panel"
+                }
+
+                # Military
+                blockoverride "third_button" {
+                    text = "IST_technology_military_panel"
+                }
+                blockoverride "third_button_tooltip" {
+                    tooltip = "IST_technology_military_panel_tooltip"
+                }
+                blockoverride "third_button_click" {
+                    onclick = "[GetScriptedGui('IST_technology_military_tab_sgui').Execute(GuiScope.SetRoot(Country.MakeScope).End)]"
+                }
+                blockoverride "third_button_visibility" {
+                    visible = "[GetScriptedGui('IST_technology_military_tab_sgui').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+                }
+                blockoverride "third_button_visibility_checked" {
+                    visible = "[Not(GetScriptedGui('IST_technology_military_tab_sgui').IsShown(GuiScope.SetRoot(Country.MakeScope).End))]"
+                }
+                blockoverride "third_button_selected" {
+                    text = "IST_technology_military_panel"
+                }
+
+                # Society
+                blockoverride "fourth_button" {
+                    text = "IST_technology_society_panel"
+                }
+                blockoverride "fourth_button_tooltip" {
+                    tooltip = "IST_technology_society_panel_tooltip"
+                }
+                blockoverride "fourth_button_click" {
+                    onclick = "[GetScriptedGui('IST_technology_society_tab_sgui').Execute(GuiScope.SetRoot(Country.MakeScope).End)]"
+                }
+                blockoverride "fourth_button_visibility" {
+                    visible = "[GetScriptedGui('IST_technology_society_tab_sgui').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+                }
+                blockoverride "fourth_button_visibility_checked" {
+                    visible = "[Not(GetScriptedGui('IST_technology_society_tab_sgui').IsShown(GuiScope.SetRoot(Country.MakeScope).End))]"
+                }
+                blockoverride "fourth_button_selected" {
+                    text = "IST_technology_society_panel"
+                }
+            }
+
+        }
+
+    }
+}

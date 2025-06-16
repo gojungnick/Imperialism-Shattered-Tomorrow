@@ -1,0 +1,26 @@
+widget = {
+    name = IST_panels
+    layer = layer_ingame_menu
+    size = { 100% 100% }
+
+    vbox = {
+        parentanchor = top|left
+        layoutpolicy_horizontal = expanding
+        layoutpolicy_vertical = expanding
+        margin_top = 85 #margin topbar
+
+        widget = {
+            layoutpolicy_horizontal = expanding
+            layoutpolicy_vertical = expanding
+
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                layoutpolicy_vertical = expanding
+
+                IST_technology_panel = {}
+
+                expand = {}
+            }
+        }
+    }
+}

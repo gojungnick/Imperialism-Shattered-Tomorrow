@@ -1,0 +1,99 @@
+IST_technology_sidebar_button = {
+	scope = country
+
+	### 기본적으로 미승인국만 사용 가능 ###
+
+	is_shown = { 
+			 is_country_type = unrecognized
+	}
+
+	is_valid = {
+			is_country_type = unrecognized
+	}
+
+	### 해당 이펙트는 scripted_effects/IST_gui_effects.txt에서 정의됨 ###
+	### 열때 메인(오버뷰) 화면을 띄우는 로직 ###
+  
+	effect = {
+		tab_button = {
+			tab_counts = 4      
+			tab_variable = IST_technology_tab
+		}
+	}
+}
+
+
+### 이하 버튼을 누를 때 해당 탭을 띄우는 로직 ###
+
+IST_technology_overview_tab_sgui = { #개요
+	scope = country
+
+	is_shown = {
+		AND = {
+			has_variable = IST_technology_tab
+			var:IST_technology_tab = 1
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = IST_technology_tab
+			value = 1
+		}
+	}
+}
+
+
+IST_technology_production_tab_sgui = { #생산
+	scope = country
+
+	is_shown = {
+		AND = {
+			has_variable = IST_technology_tab
+			var:IST_technology_tab = 2
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = IST_technology_tab
+			value = 2
+		}
+	}
+}
+
+IST_technology_military_tab_sgui = { # 군사
+	scope = country
+
+	is_shown = {
+		AND = {
+			has_variable = IST_technology_tab
+			var:IST_technology_tab = 3
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = IST_technology_tab
+			value = 3
+		}
+	}
+}
+
+IST_technology_society_tab_sgui = { # 사회
+	scope = country
+
+	is_shown = {
+		AND = {
+			has_variable = IST_technology_tab
+			var:IST_technology_tab = 4
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = IST_technology_tab
+			value = 4
+		}
+	}
+}
