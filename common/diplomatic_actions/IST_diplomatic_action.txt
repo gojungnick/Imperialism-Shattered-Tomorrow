@@ -1,0 +1,2050 @@
+﻿ist_dip_railway = {	#철도 부설권
+	requires_approval = no
+	should_notify_third_parties = no
+
+	unlocking_technologies = {
+		##ist_base_railways	#철도의 이론적 운용 기술을 뚫어야 열강의 도움을 받아 철도 건설이 가능.
+		atmospheric_engine
+	}
+	
+	potential = {
+		NOT = { is_country_type = decentralized }	#제안하려는 국가가 최소한 산업화를 시작할수 있을 만큼 국가 구실은 해야하며
+		scope:target_country = {
+			country_rank >= rank_value:great_power	#제안받는 국가가 열강이면서,
+			has_technology_researched = railways	#독자적인 철도망 운영능력을 지녔으면서,
+			any_state = {	#아무 주에서나
+				owner = scope:target_country
+				has_building = building_railway	#실제로 철도를 운용하고 있는 국가이어야 수주를 따낼수 있다.
+			}
+		}
+		#is_player = yes	#모딩 테스트용 임시 조건
+		NOT = { 
+			any_country = {
+				has_war_with = ROOT
+			}
+		}
+	}
+	
+	possible = {
+		scope:target_country = {
+			NOT = {
+				any_diplomatic_play = {
+					target_is = scope:target_country
+					is_diplomatic_play_type = dp_revolution
+				}
+				is_revolutionary = yes	#혁명에 휩싸인 상태여서도
+			}
+		}
+
+		NOT = { has_war_with = scope:target_country }	#해당국이랑 전쟁중이면 안되고,
+		scope:target_country = {	#라이벌이어서도 안대고
+			NOT = {
+				has_diplomatic_pact = {
+					who = root
+					type = rivalry
+				}					
+			}
+			NOT = {
+				has_diplomatic_pact = {
+					who = root
+					type = ist_dip_railway_war
+				}
+			}			
+		}
+		root = {
+			NOT = {
+				has_diplomatic_pact = {
+					who = scope:target_country
+					type = rivalry
+				}				
+			}
+			#NOT = {
+			#	any_diplomatic_play = {	#다른 열강이 이미 이 나라에 강제 철도계약 연장 외교행동을 벌이고 있을 경우
+			#		target_is = root
+			#		is_diplomatic_play_type = dp_railway_war
+			#	}			
+			#}
+		}
+		is_revolutionary = no	#혁명에 휩싸인 상태여서도
+		in_default = no	#당연하지만 파산상태여도 안댄다
+		custom_tooltip = {
+			text = ist_ACTION_SECOND_RAILWAY_DIP
+			#NOT = { has_variable = ist_var_rail2 }	#이미 두 나라가 사업에 참여하고있다면?
+			ist_modern_dip_railway_count < 2	#계약은 동시에 최대 두개까지만.
+		}
+	}
+	
+	accept_effect = {
+		save_scope_as = ist_rail_cont_country
+		change_relations = { country = scope:target_country value = 10 }	#건배!
+
+		scope:target_country = {
+
+			if = {	#철도수출시장 점유율 저널
+				limit = {
+					NOT = { has_journal_entry = je_ist_railway_count }
+				}
+				add_journal_entry = {
+					type = je_ist_railway_count
+				}
+			}
+		}
+		if = {	#예속화 저널 페이즈1
+			limit = {
+				NOT = { has_journal_entry = je_ist_submissive_first }	#기존에 저널 없고
+				country_rank < rank_value:major_power	#강대국 밑이고
+				is_subject = no	#자주국이면
+			}
+			add_journal_entry = {
+				type = je_ist_submissive_first
+			}
+		}
+		if = {	#열강AI는 주기적으로 계약국 교체
+			limit = {
+				is_player = no	#AI면서,
+				country_rank = rank_value:great_power	#열강이면
+			}
+			set_variable = {
+				name = ist_var_great_power_railway_cycle
+				months = 120
+			}
+		}
+	}	
+	
+	pact = {
+		#cost = 10
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		recipient_pays_maintenance = yes
+		
+		income_transfer = 0.075	#매 국가수입의 7.5%에 달하는 양의 철도 수익이 철도사업 운영국으로 흘러들어갈것입니다...
+		recipient_gets_income_transfer = yes
+		
+		actor_can_break = {
+			NOT = { has_modifier = ist_modern_obli_railway }
+			#has_modifier = ist_modern_obli_railway
+		}
+		
+		monthly_effect = {
+			#영향권 놀이
+			ist_puppet_scoring_dip_railway = yes
+			if = {
+				limit = {
+					scope:target_country = {
+						OR = {
+							has_variable = ist_var_civilwar_won_influence
+							has_modifier = ist_modern_great_power_nova
+						}
+					}
+				}
+				ist_puppet_scoring_dip_railway = yes
+			}
+			
+			add_technology_progress = { progress = 50 technology = railways }
+			if = {
+				limit = {
+					is_country_type = recognized
+				}
+				add_technology_progress = { progress = 50 technology = railways }
+			}
+			
+			ist_add_modifier_rail_down = yes	
+			
+			#hidden_effect = {	#오 이거 작동하네? 이젠 필요없어!
+			#	ist_add_modifier_rail_up = yes
+			#	ist_add_modifier_rail_toomany = yes
+			#}
+
+		}
+		
+		break_effect = {
+			#trigger_event = { id = ist_modern_events.6 }	#뉴우스	
+			if = {
+				limit = {
+					country_rank != rank_value:great_power	#내가 열강이 아니라면
+				}
+				change_relations = { country = scope:target_country value = -15 }	#계약 해지로 상대 열강은 분노하며,
+				change_infamy = 5	#열강들은 감히 미개국이 열강의 재산을 국유화 해버리는것에 다같이 혐오할것입니다.
+				if = {
+					limit = {
+						NOT = { has_technology_researched = railways }
+					}
+					add_modifier = {	#국유화의 여파
+						name = ist_modern_railway_break
+						months = 12
+						is_decaying = yes
+					}
+					add_treasury = -50000	#위약금
+					scope:target_country = {
+						add_treasury = 50000
+					}
+					change_infamy = 10
+					change_relations = { country = scope:target_country value = -10 }	#계약 해지로 상대 열강은 분노하며,
+				}
+				else = {
+					add_modifier = {	#국유화의 여파
+						name = ist_modern_railway_break
+						months = 2
+						is_decaying = yes
+					}
+				}
+			}
+			if = {
+				limit = {
+					country_rank < rank_value:major_power	#내가 국가등급이 메이저 국 밑이라면,
+					country_rank >= rank_value:unrecognized_regional_power
+				}
+				#set_variable = {	# 1년동안 강제 계약 연장 cb를 상대측이 획득
+				#	name = ist_var_rail_cb_down
+				#	value = 1
+				#	months = 12
+				#}
+				save_scope_as = ist_rail_war_target_country
+				scope:target_country = {
+					#set_variable = {
+					#	name = ist_var_rail_cb_up
+					#	value = 1
+					#	months = 12
+					#}
+					trigger_event = { id = ist_modern_events.5 }	#뉴우스
+				}
+			}
+		}		
+		#country_rank != rank_value:unrecognized_power
+		#country_rank != rank_value:unrecognized_major_power
+		#country_rank != rank_value:unrecognized_regional_power
+		
+	}
+	
+	ai = {
+		propose_score = {
+			value = 15
+		}
+		will_propose = {	#계약을 제안할것
+			NOT = { has_technology_researched = railways }	#독자적 철도건설능력이 없고,
+			ist_modern_dip_railway_count < 1
+			#NOT = { has_variable = ist_var_rail }	#발행된 사업허가서가 없고,			
+			#NOT = { 
+			#	has_diplomatic_pact = {
+			#		#who = any_country
+			#		type = ist_dip_railway 
+			#	}
+			#}	#이미 다른 열강과 계약을 맺은 적이 없고,
+			#NOT = { 
+			#	has_diplomatic_pact = {
+			#		#who = any_country
+			#		type = ist_dip_railway_war 
+			#	}
+			#}	#강제로 연장된 계약도 없다면
+			OR = {
+				country_rank = rank_value:great_power
+				any_scope_state = {
+					market_access < 0.95
+				}
+			}
+		}		
+		will_break = {	#계약을 파기할것
+			#treasury >= 100000	#국고가 10만파운드를 넘어 위약금을 치룰 형편이 된다면?
+			OR = {
+				has_technology_researched = railways	#독자적 철도건설능력을 갖추거나,
+				relations:target_country <= -50	#관계가 너무나 안좋으면
+				AND = {
+					is_player = no	#AI면서,
+					country_rank = rank_value:great_power	#열강이면
+					NOT = { has_variable = ist_var_great_power_railway_cycle }
+				}
+			}
+			#OR = {
+			#	has_technology_researched = railways	#독자적 철도건설능력을 갖추고,
+			#	is_revolutionary = yes	#내가 혁명에 휩싸이거나
+			#	scope:target_country = { is_revolutionary = yes }	#수주국이 혁명에 휩싸이거나
+			#	any_diplomatic_play = {
+			#		target_is = scope:target_country
+			#		is_diplomatic_play_type = dp_revolution
+			#	}		
+			#}			
+		}
+	}
+}
+
+ist_dip_railway_war = {	#강제 연장된 철도 계약
+	requires_approval = no
+	should_notify_third_parties = no
+	can_select = no
+	can_select_to_break = no
+	
+	potential = {
+		always = no
+	}
+	
+	accept_effect = {
+		#set_variable = {
+		#	name = ist_var_rail_forced
+		#	months = 120	#10년간
+		#}
+	}	
+	
+	pact = {
+		cost = 100
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		recipient_pays_maintenance = yes		
+		
+		income_transfer = 0.05	#매 국가수입의 5.0%에 달하는 양의 철도 수익이 철도사업 운영국으로 흘러들어갈것입니다...
+		recipient_gets_income_transfer = yes		
+	
+		should_auto_break = {
+			NOT = { has_modifier = ist_modern_railway_war_loser }
+		}
+	
+		monthly_effect = {
+			#영향권 놀이
+			ist_puppet_scoring_dip_railway = yes
+			if = {
+				limit = {
+					scope:target_country = {
+						has_variable = ist_var_civilwar_won_influence
+					}
+				}
+				ist_puppet_scoring_dip_railway = yes
+			}
+			
+			add_technology_progress = { progress = 40 technology = railways }
+			if = {
+				limit = {
+					is_country_type = recognized
+				}
+				add_technology_progress = { progress = 40 technology = railways }
+			}
+			
+			ist_add_modifier_rail_down = yes	
+		}	
+		
+	}
+}
+
+ist_dip_mining = {	#광산 채굴권
+	requires_approval = yes
+	should_notify_third_parties = no
+	can_select_to_break = no	#지장 찍으면 무르기 없기~
+	
+	potential = {
+		NOT = { is_country_type = decentralized }	#제안하려는 국가가 최소한 산업화를 시작할수 있을 만큼 국가 구실은 해야하며
+		country_rank < rank_value:great_power	#제안하는 국가는 자존심이 있으니 열강이어선 안되고,
+		scope:target_country = {
+			country_rank = rank_value:great_power	#제안받는 국가가 열강이어야 하고,
+			is_subject = no	#또 누군가의 속국이어서도 안댄다. 근데 이 코드는 작동을 안하네?
+		}
+		#is_player = yes	#모딩 테스트용 임시 조건
+	}
+	
+	possible = {
+		OR = {	#조건테스트
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_coal_mine
+					NOT = { has_modifier = ist_modern_mining_coal_state }
+					NOT = { has_modifier = ist_modern_mining_coal_state_absolute }			
+				}
+				scope:target_country = {
+					is_player = yes
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_coal
+							level >= 1
+						}
+					}
+				}
+			}
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_iron_mine
+					NOT = { has_modifier = ist_modern_mining_iron_state }
+					NOT = { has_modifier = ist_modern_mining_iron_state_absolute }				
+				}
+				scope:target_country = {
+					is_player = yes
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_iron
+							level >= 1
+						}
+					}
+				}
+			}
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_sulfur_mine
+					NOT = { has_modifier = ist_modern_mining_sulfur_state }
+					NOT = { has_modifier = ist_modern_mining_sulfur_state_absolute }			
+				}
+				scope:target_country = {
+					is_player = yes
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_sulfur
+							level >= 1
+						}
+					}
+				}
+			}
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_gold_mine
+					NOT = { has_modifier = ist_modern_mining_gold_state }
+					NOT = { has_modifier = ist_modern_mining_gold_state_absolute }				
+				}
+				scope:target_country = {
+					is_player = yes
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_gold
+							level >= 1
+						}
+					}
+				}
+			}
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_coal_mine
+					NOT = { has_modifier = ist_modern_mining_coal_state }
+					NOT = { has_modifier = ist_modern_mining_coal_state_absolute }			
+				}
+				scope:target_country = {
+					is_player = no
+				}
+			}
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_iron_mine
+					NOT = { has_modifier = ist_modern_mining_iron_state }
+					NOT = { has_modifier = ist_modern_mining_iron_state_absolute }				
+				}
+				scope:target_country = {
+					is_player = no
+				}
+			}
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_sulfur_mine
+					NOT = { has_modifier = ist_modern_mining_sulfur_state }
+					NOT = { has_modifier = ist_modern_mining_sulfur_state_absolute }			
+				}
+				scope:target_country = {
+					is_player = no
+				}
+			}
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_gold_mine
+					NOT = { has_modifier = ist_modern_mining_gold_state }
+					NOT = { has_modifier = ist_modern_mining_gold_state_absolute }				
+				}
+				scope:target_country = {
+					is_player = no
+				}
+			}
+		}
+		#OR = {
+		#	NOT = { has_variable = ist_var_mining_slot }
+		#	var:ist_var_mining_slot < 5	#슬롯 초과
+		#}
+		ist_modern_dip_mining_count < 5
+		NOT = { has_war_with = scope:target_country }	#해당국이랑 전쟁중이면 안되고,
+		scope:target_country = {	#라이벌이어서도 안대고
+			NOT = {
+				has_diplomatic_pact = {
+					who = root
+					type = rivalry
+				}					
+			}
+			scaled_debt < 0.5	#채권국의 재무상태가 나름 양호해야 한다		
+		}
+		root = {
+			NOT = {
+				has_diplomatic_pact = {
+					who = scope:target_country
+					type = rivalry
+				}					
+			}					
+		}
+		
+		is_revolutionary = no	#혁명에 휩싸인 상태여서도
+		#in_default = no	#당연하지만 파산상태여도 안댄다		
+	}
+	
+	accept_effect = {
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_mining_slot }
+			}
+			set_variable = {
+				name = ist_var_mining_slot
+				value = 0
+			}
+		}
+		
+		change_relations = { country = scope:target_country value = 5 }	#건배!
+		save_scope_as = ist_mining_down_country
+		scope:target_country = {
+			save_scope_as = ist_mining_up_country
+			trigger_event = { id = ist_modern_events.19 }
+		}
+		
+		ist_contract_mining_timer = yes	
+		
+		#trigger_event = {
+		#	id = ist_modern_events.8
+		#	months = 2
+		#}
+		if = {	#예속화 저널 페이즈1
+			limit = {
+				NOT = { has_journal_entry = je_ist_submissive_first }	#기존에 저널 없고
+				country_rank < rank_value:major_power	#강대국 밑이고
+				is_subject = no	#자주국이면
+			}
+			add_journal_entry = {
+				type = je_ist_submissive_first
+			}
+		}
+	}	
+	
+	pact = {
+		#cost = 15
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		recipient_pays_maintenance = yes		
+		
+		break_effect = {
+			if = {
+				limit = {
+					has_diplomatic_pact = {
+						who = scope:target_country
+						type = ist_dip_mining
+					}
+				}
+				add_treasury = -500000
+				set_global_variable = {
+					name = ist_global_var_dip_warning_ignored
+					months = 18
+				}
+			}
+			custom_tooltip = {
+				text = ist_DIP_WARNING_MESSAGE
+			}
+		}
+		monthly_effect = {
+			#영향권 놀이
+			ist_puppet_scoring_dip_railway = yes
+			if = {
+				limit = {
+					scope:target_country = {
+						OR = {
+							has_variable = ist_var_civilwar_won_influence
+							has_modifier = ist_modern_great_power_nova
+						}
+					}
+				}
+				ist_puppet_scoring_dip_railway = yes
+			}
+		}
+	}
+	
+	ai = {
+		propose_score = {
+			value = 15
+		}
+		will_propose = {	#계약을 제안할것
+			scaled_debt >= 0.10	#국가 채무가 이만큼 이상이고
+			#scope:target_country = {
+			#	this = c:GBR
+			#}
+			OR = {
+				any_state = {
+					owner = ROOT
+					has_building = building_coal_mine
+					NOT = { has_modifier = ist_modern_mining_coal_state }
+					NOT = { has_modifier = ist_modern_mining_coal_state_absolute }		
+					any_scope_building = {
+						is_building_type = building_coal_mine
+						level >= 6
+					}					
+				}
+				any_state = {
+					owner = ROOT
+					has_building = building_iron_mine
+					NOT = { has_modifier = ist_modern_mining_iron_state }
+					NOT = { has_modifier = ist_modern_mining_iron_state_absolute }		
+					any_scope_building = {
+						is_building_type = building_iron_mine
+						level >= 6
+					}					
+				}
+				any_state = {
+					owner = ROOT
+					has_building = building_sulfur_mine
+					NOT = { has_modifier = ist_modern_mining_sulfur_state }
+					NOT = { has_modifier = ist_modern_mining_sulfur_state_absolute }
+					any_scope_building = {
+						is_building_type = building_sulfur_mine
+						level >= 6
+					}					
+				}
+				any_state = {
+					owner = ROOT
+					has_building = building_gold_mine
+					NOT = { has_modifier = ist_modern_mining_gold_state }
+					NOT = { has_modifier = ist_modern_mining_gold_state_absolute }		
+					any_scope_building = {
+						is_building_type = building_gold_mine
+						level >= 1
+					}					
+				}
+			}						
+		}		
+
+	}
+}
+
+ist_dip_forest = {	#산림 벌채권
+	requires_approval = yes
+	should_notify_third_parties = no
+	can_select_to_break = no	#지장 찍으면 무르기 없기~
+	
+	potential = {
+		NOT = { is_country_type = decentralized }	#제안하려는 국가가 최소한 산업화를 시작할수 있을 만큼 국가 구실은 해야하며
+		country_rank < rank_value:great_power	#제안하는 국가는 자존심이 있으니 열강이어선 안되고,
+		scope:target_country = {
+			country_rank = rank_value:great_power	#제안받는 국가가 열강이어야 하고,
+			is_subject = no	#또 누군가의 속국이어서도 안댄다. 근데 이 코드는 작동을 안하네?
+		}
+		#is_player = yes	#모딩 테스트용 임시 조건
+	}
+	
+	possible = {
+		OR = {	#조건테스트
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_logging_camp	#당연히 소유한 주 중 한곳이상에 벌목장이 있기는 해야겠지요?
+					NOT = { has_modifier = ist_modern_forest_state }
+					NOT = { has_modifier = ist_modern_forest_state_absolute }
+				}
+				scope:target_country = {
+					is_player = yes
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_wood
+							level >= 1
+						}
+					}
+				}
+			}
+			AND = {
+				any_state = {
+					owner = ROOT
+					has_building = building_logging_camp	#당연히 소유한 주 중 한곳이상에 벌목장이 있기는 해야겠지요?
+					NOT = { has_modifier = ist_modern_forest_state }
+					NOT = { has_modifier = ist_modern_forest_state_absolute }
+				}
+				scope:target_country = {
+					is_player = no
+				}
+			}
+		}
+		#custom_tooltip = {
+		#	text = ist_ACTION_OVERSLOT_FOREST_DIP
+		#	OR = {
+		#		NOT = { has_variable = ist_var_forest_slot }
+		#		var:ist_var_forest_slot < 5	#슬롯 초과
+		#	}
+		#}
+		#OR = {
+		#	NOT = { has_variable = ist_var_forest_slot }
+		#	var:ist_var_forest_slot < 5	#슬롯 초과
+		#}
+		ist_modern_dip_forest_count < 5
+		NOT = { has_war_with = scope:target_country }	#해당국이랑 전쟁중이면 안되고,
+		scope:target_country = {	#라이벌이어서도 안대고
+			NOT = {
+				has_diplomatic_pact = {
+					who = root
+					type = rivalry
+				}					
+			}
+			scaled_debt < 0.5	#채권국의 재무상태가 나름 양호해야 한다		
+		}
+		root = {
+			NOT = {
+				has_diplomatic_pact = {
+					who = scope:target_country
+					type = rivalry
+				}					
+			}					
+		}
+		is_revolutionary = no	#혁명에 휩싸인 상태여서도
+		#in_default = no	#당연하지만 파산상태여도 안댄다		
+	}
+	
+	accept_effect = {
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_forest_slot }
+			}
+			set_variable = {
+				name = ist_var_forest_slot
+				value = 0
+			}
+		}
+		
+		change_relations = { country = scope:target_country value = 5 }	#건배!
+		save_scope_as = ist_forest_down_country
+		scope:target_country = {
+			save_scope_as = ist_forest_up_country
+		}		
+		ist_contract_forest_port_check = yes
+		ist_contract_forest = yes
+		ist_contract_forest_timer = yes	
+		ist_add_modifier_forest_state = yes
+		
+		#trigger_event = {
+		#	id = ist_modern_events.8
+		#	months = 2
+		#}
+		if = {	#예속화 저널 페이즈1
+			limit = {
+				NOT = { has_journal_entry = je_ist_submissive_first }	#기존에 저널 없고
+				country_rank < rank_value:major_power	#강대국 밑이고
+				is_subject = no	#자주국이면
+			}
+			add_journal_entry = {
+				type = je_ist_submissive_first
+			}
+		}
+	}	
+	pact = {
+		#cost = 25
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		recipient_pays_maintenance = yes		
+		
+		break_effect = {
+			if = {
+				limit = {
+					has_diplomatic_pact = {
+						who = scope:target_country
+						type = ist_dip_forest
+					}
+				}
+				add_treasury = -500000
+				set_global_variable = {
+					name = ist_global_var_dip_warning_ignored
+					months = 18
+				}
+			}
+			custom_tooltip = {
+				text = ist_DIP_WARNING_MESSAGE
+			}
+		}
+		monthly_effect = {
+			#영향권 놀이
+			ist_puppet_scoring_dip_railway = yes
+			if = {
+				limit = {
+					scope:target_country = {
+						OR = {
+							has_variable = ist_var_civilwar_won_influence
+							has_modifier = ist_modern_great_power_nova
+						}
+					}
+				}
+				ist_puppet_scoring_dip_railway = yes
+			}
+		}
+	}
+	
+	ai = {
+		propose_score = {
+			value = 15
+		}
+		will_propose = {	#계약을 제안할것
+			scaled_debt >= 0.10	#국가 채무가 이만큼 이상이고
+			any_state = {	#최소 6렙 이상의 여유 벌목장이 있을 경우에만, 
+				owner = ROOT
+				NOT = { has_modifier = ist_modern_forest_state }
+				NOT = { has_modifier = ist_modern_forest_state_absolute }
+				any_scope_building = {
+					is_building_type = building_logging_camp
+					level >= 6
+				}				
+			}			
+		}		
+
+	}
+}
+
+ist_dip_fishing = {	#해양 어업권
+	requires_approval = yes
+	should_notify_third_parties = no
+	can_select_to_break = no	#지장 찍으면 무르기 없기~
+	
+	potential = {
+		NOT = { is_country_type = decentralized }	#제안하려는 국가가 최소한 산업화를 시작할수 있을 만큼 국가 구실은 해야하며
+		country_rank < rank_value:great_power	#제안하는 국가는 자존심이 있으니 열강이어선 안되고,
+		scope:target_country = {
+			country_rank >= rank_value:major_power	#제안받는 국가가 메이저국 이상이어야 하고,
+			is_subject = no	#또 누군가의 속국이어서도 안댄다.
+		}
+		#is_player = yes	#모딩 테스트용 임시 조건
+	}
+	
+	possible = {
+		OR = {	#조건테스트
+			AND = {
+				any_state = {
+					owner = ROOT
+					OR = {
+						has_building = building_fishing_wharf
+						has_building = building_whaling_station
+					}
+					NOT = { has_modifier = ist_modern_fishing_fish_state }
+					NOT = { has_modifier = ist_modern_fishing_fish_state_absolute }			
+				}
+				scope:target_country = {
+					is_player = yes
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_fish
+							level >= 1
+						}
+					}
+				}
+			}
+			AND = {
+				any_state = {
+					owner = ROOT
+					OR = {
+						has_building = building_fishing_wharf
+						has_building = building_whaling_station
+					}
+					NOT = { has_modifier = ist_modern_fishing_fish_state }
+					NOT = { has_modifier = ist_modern_fishing_fish_state_absolute }				
+				}
+				scope:target_country = {
+					is_player = no
+				}
+			}
+		}
+		#OR = {
+		#	NOT = { has_variable = ist_var_fishing_slot }
+		#	var:ist_var_fishing_slot < 3	#슬롯 초과
+		#}
+		ist_modern_dip_fishing_count < 3
+		
+		NOT = { has_war_with = scope:target_country }	#해당국이랑 전쟁중이면 안되고,
+		scope:target_country = {	#라이벌이어서도 안대고
+			NOT = {
+				has_diplomatic_pact = {
+					who = root
+					type = rivalry
+				}					
+			}
+			scaled_debt < 0.5	#채권국의 재무상태가 나름 양호해야 한다		
+		}
+		root = {
+			NOT = {
+				has_diplomatic_pact = {
+					who = scope:target_country
+					type = rivalry
+				}					
+			}					
+		}
+		#custom_tooltip = {
+		#	text = ist_WIP_TOOLTIP
+		#	is_player = no	#개발중이라면?
+		#}		
+		is_revolutionary = no	#혁명에 휩싸인 상태여서도
+		#in_default = no	#당연하지만 파산상태여도 안댄다		
+	}
+		
+	accept_effect = {
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_fishing_slot }
+			}
+			set_variable = {
+				name = ist_var_fishing_slot
+				value = 0
+			}
+		}
+		
+		change_relations = { country = scope:target_country value = 5 }	#건배!
+		save_scope_as = ist_fishing_down_country
+		scope:target_country = {
+			save_scope_as = ist_fishing_up_country
+		}		
+		ist_contract_fishing_port_check = yes
+		ist_contract_fishing = yes
+		ist_contract_fishing_timer = yes	
+		ist_add_modifier_fishing_state = yes
+		
+		#trigger_event = {
+		#	id = ist_modern_events.8
+		#	months = 2
+		#}
+		if = {	#예속화 저널 페이즈1
+			limit = {
+				NOT = { has_journal_entry = je_ist_submissive_first }	#기존에 저널 없고
+				country_rank < rank_value:major_power	#강대국 밑이고
+				is_subject = no	#자주국이면
+			}
+			add_journal_entry = {
+				type = je_ist_submissive_first
+			}
+		}
+	}
+	
+	pact = {
+		#cost = 25
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		recipient_pays_maintenance = yes		
+		
+		break_effect = {
+			if = {
+				limit = {
+					has_diplomatic_pact = {
+						who = scope:target_country
+						type = ist_dip_fishing
+					}
+				}
+				add_treasury = -500000
+				set_global_variable = {
+					name = ist_global_var_dip_warning_ignored
+					months = 18
+				}
+			}
+			custom_tooltip = {
+				text = ist_DIP_WARNING_MESSAGE
+			}
+		}
+		monthly_effect = {
+			#영향권 놀이
+			ist_puppet_scoring_dip_railway = yes
+			if = {
+				limit = {
+					scope:target_country = {
+						OR = {
+							has_variable = ist_var_civilwar_won_influence
+							has_modifier = ist_modern_great_power_nova
+						}
+					}
+				}
+				ist_puppet_scoring_dip_railway = yes
+			}
+		}
+
+		#daily_effect = {
+		#
+		#}
+		
+		#weekly_effect = {
+		#	scope:target_country = {
+		#	
+		#	}
+		#}	
+		#should_auto_break = {
+		#	always = yes # Once forced duration is up
+		#}		
+		
+	}
+	
+	ai = {
+		propose_score = {
+			value = 15
+		}
+		will_propose = {	#계약을 제안할것
+			scaled_debt >= 0.10	#국가 채무가 이만큼 이상이고
+			any_state = {	#최소 6렙 이상의 여유 어촌이나 고래잡이 시설이 있을경우에만 
+				owner = ROOT
+				NOT = { has_modifier = ist_modern_forest_state }
+				NOT = { has_modifier = ist_modern_forest_state_absolute }
+				OR = {
+					any_scope_building = {
+						is_building_type = building_fishing_wharf
+						level >= 6
+					}
+					any_scope_building = {
+						is_building_type = building_whaling_station
+						level >= 6
+					}
+				}				
+			}			
+		}		
+
+	}
+}
+
+ist_dip_electric = {	#전기전선권
+	requires_approval = no
+	should_notify_third_parties = no
+
+	unlocking_technologies = {
+		#ist_base_railways	#철도의 이론적 운용 기술을 뚫어야 열강의 도움을 받아 전선 부설이 가능.
+		atmospheric_engine
+	}
+	
+	potential = {
+		NOT = { is_country_type = decentralized }	#제안하려는 국가가 최소한 산업화를 시작할수 있을 만큼 국가 구실은 해야하며
+		scope:target_country = {
+			country_rank >= rank_value:great_power	#제안받는 국가가 열강이면서,
+			has_technology_researched = electrical_generation	#독자적인 전력망 운영능력을 지녔으면서,
+			any_scope_state = {	#아무 주에서나
+				#owner = scope:target_country
+				has_building = building_power_plant	#실제로 발전소를 운용하고 있는 국가이어야 수주를 따낼수 있다.
+			}
+		}
+		#is_player = yes	#모딩 테스트용 임시 조건
+	}
+	
+	possible = {
+		scope:target_country = {
+			NOT = {
+				any_diplomatic_play = {
+					target_is = scope:target_country
+					is_diplomatic_play_type = dp_revolution
+				}
+				is_revolutionary = yes	#혁명에 휩싸인 상태여서도
+			}
+		}		
+		NOT = { has_war_with = scope:target_country }	#해당국이랑 전쟁중이면 안되고,
+		scope:target_country = {	#라이벌이어서도 안대고
+			NOT = {
+				has_diplomatic_pact = {
+					who = root
+					type = rivalry
+				}					
+			}					
+		}
+		root = {
+			NOT = {
+				has_diplomatic_pact = {
+					who = scope:target_country
+					type = rivalry
+				}				
+			}
+		}
+		#계약은 기본적으로 최대 셋까지만
+		ist_modern_dip_electric_count < 3
+	}
+	
+	accept_effect = {
+		change_relations = { country = scope:target_country value = 10 }	#건배!
+		scope:target_country = {
+			if = {	#해외정보국 저널
+				limit = {
+					NOT = { has_journal_entry = je_ist_electric_intel }
+				}
+				add_journal_entry = {
+					type = je_ist_electric_intel
+				}
+			}
+		}
+		if = {	#예속화 저널 페이즈1
+			limit = {
+				NOT = { has_journal_entry = je_ist_submissive_first }	#기존에 저널 없고
+				country_rank < rank_value:major_power	#강대국 밑이고
+				is_subject = no	#자주국이면
+			}
+			add_journal_entry = {
+				type = je_ist_submissive_first
+			}
+		}
+	}	
+	
+	pact = {
+		#cost = 25
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		recipient_pays_maintenance = yes
+		
+		income_transfer = 0.04	#전선부설료는 매 국가수입의 4%
+		recipient_gets_income_transfer = yes		
+
+		actor_can_break = {
+			NOT = { has_modifier = ist_modern_obli_electric }
+		}
+		
+		monthly_effect = {
+			#영향권 놀이
+			ist_puppet_scoring_dip_railway = yes
+			if = {
+				limit = {
+					scope:target_country = {
+						OR = {
+							has_variable = ist_var_civilwar_won_influence
+							has_modifier = ist_modern_great_power_nova
+						}
+					}
+				}
+				ist_puppet_scoring_dip_railway = yes
+			}
+			
+			add_modifier = {	#외국계 전기회사 운영됨
+				name = ist_modern_electric_cost
+				months = 1
+			}
+			
+			if = {
+				limit = {
+					country_rank = rank_value:great_power
+				}
+				add_technology_progress = { progress = 400 technology = electrical_generation }
+			}
+			
+			if = {	#이하는 독자적인 전력산업을 스스로 육성할 능력을 갖추었을경우, 전기 사업국이 매달 획득하는 정보자산의 양을 줄이는 코드입니다.
+				limit = {
+					has_technology_researched = electrical_generation	#전기 기술을 연구하는데 성공했으며,
+					any_state = {	#아무 주던지 간에		
+						owner = ROOT	#이 국가가 소유한 주 중에서
+						has_building = building_power_plant	#발전소가 있다면?
+					}
+				}
+				
+				scope:target_country = {	#달마다 0.25씩
+					if = {
+						limit = {
+							var:ist_var_electric_intel_level < 200
+						}
+						change_variable = {
+							name = ist_var_electric_intel_level
+							add = 0.25
+						}
+					}
+				}
+			}
+			else = {
+				scope:target_country = {	#달마다 0.5씩
+					if = {
+						limit = {
+							var:ist_var_electric_intel_level < 200
+						}
+						change_variable = {
+							name = ist_var_electric_intel_level
+							add = 0.5
+						}
+					}
+				}	
+			}
+		}
+		
+		break_effect = {		
+			change_relations = { country = scope:target_country value = -15 }	#실망함
+			add_treasury = -100000	#위약금 10만원
+			scope:target_country = {
+				add_treasury = 100000
+			}
+			add_modifier = {	#국유화의 여파
+				name = ist_modern_electric_break
+				months = 12
+				is_decaying = yes
+			}
+		}		
+		
+	}
+	
+	ai = {
+		propose_score = {
+			value = 10
+		}
+		will_propose = {	#계약을 제안할것
+			NOT = { has_technology_researched = electrical_generation }	#독자적 전력기술이 없는상태서
+			OR = {
+				has_technology_researched = rotary_valve_engine	#로터리밸브엔진 기술을 연구했거나
+				is_researching_technology = rotary_valve_engine	#하고있거나
+				#can_research = rotary_valve_engine	#할수있는경우에
+			}
+			#기본적으로 계약은 하나만 유지하도록
+			ist_modern_dip_electric_count < 1
+		}		
+		will_break = {	#계약을 파기할것
+			has_technology_researched = electrical_generation	#독자적 전력망 운영능력을 갖추고,
+			#treasury >= 100000	#국고가 10만파운드를 넘어 위약금을 치룰 형편이 된다면?
+		}
+	}
+}
+
+ist_dip_espionage = {	#첩보
+	requires_approval = no
+	should_notify_third_parties = no
+	show_effect_in_tooltip = yes
+	
+	potential = {
+		has_journal_entry = je_ist_electric_intel
+		scope:target_country = {
+			NOT = { is_country_type = decentralized }
+		}
+	}
+	
+	possible = {
+		is_player = yes
+		NOT = { has_variable = ist_var_espionage_cooltime }
+		OR = {	#AI용 임시조건!
+			AND = {
+				exists = var:ist_var_electric_intel_level
+				var:ist_var_electric_intel_level >= 50
+			}
+			is_player = yes
+		}
+	}
+
+	accept_effect = {
+		set_variable = {
+			name = ist_var_espionage_cooltime
+			days = 31
+		}
+		scope:target_country = {
+			save_scope_as = ist_scope_espionage_target_country
+		}
+		trigger_event = { id = ist_modern_events.200 }
+		if = {
+			limit = {
+				is_player = no
+				NOT = { has_variable = ist_var_gat_ai_cooltime }
+			}
+			set_variable = {
+				name = ist_var_gat_ai_cooltime
+				days = 420
+			}
+		}
+	}
+	
+	ai = {
+		propose_score = {
+			value = 3
+			
+			if = {
+				limit = {
+					country_rank > scope:target_country.country_rank
+				}
+				add = 1
+			}
+		}
+		#will_propose = {	#계약을 제안할것
+		#	 always = yes
+		#}
+	}
+}
+
+ist_dip_credit = {	#긴급 단기 차관
+	requires_approval = yes
+	should_notify_third_parties = no
+	can_select_to_break = no	#지장 찍으면 무르기 없기~
+	
+	potential = {
+		NOT = { is_country_type = decentralized }	#제안하려는 국가가 최소한 산업화를 시작할수 있을 만큼 국가 구실은 해야하며
+		country_rank < rank_value:great_power	#제안하는 국가는 자존심이 있으니 열강이어선 안되고,
+		scope:target_country = {
+			country_rank = rank_value:great_power	#제안받는 국가가 열강이어야 하고,
+			is_subject = no	#또 누군가의 속국이어서도 안댄다. 근데 이 코드는 작동을 안하네?
+		}
+		#is_player = yes	#모딩 테스트용 임시 조건
+	}
+	
+	possible = {
+		OR = {
+			NOT = { has_variable = ist_var_credit_slot }
+			var:ist_var_credit_slot < 3	#슬롯 초과
+		}		
+		NOT = { has_war_with = scope:target_country }	#해당국이랑 전쟁중이면 안되고,
+		scope:target_country = {	#라이벌이어서도 안대고
+			NOT = {
+				has_diplomatic_pact = {
+					who = root
+					type = rivalry
+				}					
+			}
+			scaled_debt < 0.5	#채권국의 재무상태가 나름 양호해야 한다		
+		}
+		root = {
+			NOT = {
+				has_diplomatic_pact = {
+					who = scope:target_country
+					type = rivalry
+				}					
+			}					
+		}
+		#is_revolutionary = no	#혁명에 휩싸인 상태여서도		
+	}
+	
+	accept_effect = {
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_credit_slot }
+			}
+			set_variable = {
+				name = ist_var_credit_slot
+				value = 0
+			}
+		}
+		
+		change_relations = { country = scope:target_country value = 5 }	#건배!
+		scope:target_country = {
+			save_scope_as = ist_credit_up_country
+		}			
+		ist_contract_credit = yes
+		ist_contract_credit_timer = yes
+	}	
+	
+	pact = {
+		is_two_sided_pact = no
+		show_in_outliner = yes
+	}
+	
+	ai = {
+		propose_score = {
+			value = 10
+		}
+		will_propose = {	#계약을 제안할것
+			scaled_debt >= 0.50	#국가 채무가 최대 신용 한도의 절반이상 쌓였고, 
+			#always = no			
+		}		
+
+	}
+}
+
+ist_dip_want = {	#찜해놓기~
+	requires_approval = no
+	should_notify_third_parties = no
+	show_effect_in_tooltip = yes
+
+	potential = {
+		country_rank = rank_value:great_power	#그 주체는 열강만 가능하고,
+		scope:target_country = {
+			NOT = { is_country_type = decentralized }	#찜할 나라가 최소한 산업화를 시작할수 있을 만큼 국가 구실은 해야하며
+			country_rank < rank_value:major_power #당할 나라는 강대국 밑이어야함
+			#is_country_type = unrecognized	#동시에 미승인국이어야 함
+			#is_subject = no	#이미 누군가의 속국이면 안댐
+		}
+		#is_player = yes	#모딩 테스트용 임시 조건
+	}
+	
+	possible = {
+		has_interest_marker_in_region = scope:target_country.capital.region	#대상 국가가 내가 관심지역 칠해둔 곳 안에 있어야 한다
+		OR = {
+			is_player = yes
+			AND = {
+				influence >= 600
+				ist_modern_dip_want_count <= 3
+			}
+		}
+	}
+	
+	accept_effect = {
+		change_infamy = 3
+		if = {
+			limit = {
+				is_player = no
+			}
+			set_variable = {
+				name = ist_var_dip_want_ai_timer
+				months = 60
+			}
+		}
+	}
+
+	pact = {
+		cost = 400
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		recipient_pays_maintenance = yes	
+		
+		actor_can_break = {
+			NOT = { has_variable = ist_var_dip_want_ai_timer }
+		}
+		
+		monthly_effect = {
+			hidden_effect = {
+				##뽑기 시작
+				if = {
+					limit = {
+						scope:target_country = {
+							NOT = {
+								owes_obligation_to = root
+								has_variable = ist_var_obli_deal_1
+								has_variable = ist_var_obli_deal_2
+								has_variable = ist_var_obli_deal_3
+								has_variable = ist_var_obli_deal_ready
+							}
+						}						
+					}
+					random_list = { 
+						1000 = {}
+						100 = {}	#부가모듈. 나중에 ist_dip_dont_want 만들면 이부분은 떼자
+						1 = { scope:target_country = { set_owes_obligation_to = { country = root setting = yes } } }
+						2 = {
+							scope:target_country = {
+								save_scope_as = ist_deal_country_down
+								set_variable = {
+									name = ist_var_obli_deal_ready
+									days = 31
+								}
+							}
+							trigger_event = { id = ist_modern_events.700 }	#자원개발-석탄
+						}
+						2 = {
+							scope:target_country = {
+								save_scope_as = ist_deal_country_down
+								set_variable = {
+									name = ist_var_obli_deal_ready
+									days = 31
+								}
+							}
+							trigger_event = { id = ist_modern_events.710 }	#자원개발-철
+						}
+						2 = {
+							scope:target_country = {
+								save_scope_as = ist_deal_country_down
+								set_variable = {
+									name = ist_var_obli_deal_ready
+									days = 31
+								}
+							}
+							trigger_event = { id = ist_modern_events.720 }	#자원개발-유황
+						}
+						4 = {
+							scope:target_country = {
+								save_scope_as = ist_deal_country_down
+								set_variable = {
+									name = ist_var_obli_deal_ready
+									days = 31
+								}
+							}
+							trigger_event = { id = ist_modern_events.730 }	#자원개발-금
+						}
+						5 = {
+							scope:target_country = {
+								save_scope_as = ist_deal_country_down
+								set_variable = {
+									name = ist_var_obli_deal_ready
+									days = 31
+								}
+							}
+							trigger_event = { id = ist_modern_events.740 }	#자원개발-나무
+						}
+						3 = {
+							scope:target_country = {
+								save_scope_as = ist_deal_country_down
+								set_variable = {
+									name = ist_var_obli_deal_ready
+									days = 31
+								}
+							}
+							trigger_event = { id = ist_modern_events.750 }	#자원개발-생선
+						}
+						3 = {
+							scope:target_country = {
+								save_scope_as = ist_deal_country_down
+								set_variable = {
+									name = ist_var_obli_deal_ready
+									days = 31
+								}
+							}
+							trigger_event = { id = ist_modern_events.760 }	#자원개발-석유
+						}
+						3 = {
+							scope:target_country = {
+								save_scope_as = ist_deal_country_down
+								set_variable = {
+									name = ist_var_obli_deal_ready
+									days = 31
+								}
+							}
+							trigger_event = { id = ist_modern_events.770 }	#경제지원
+						}
+						3 = {
+							scope:target_country = {
+								save_scope_as = ist_deal_country_down
+								set_variable = {
+									name = ist_var_obli_deal_ready
+									days = 31
+								}
+							}
+							trigger_event = { id = ist_modern_events.780 }	#기술지원
+						}
+					}
+				}
+			}
+		}
+		
+		should_auto_break = {
+			scope:target_country = {
+				country_rank >= rank_value:major_power
+			}		
+		}
+		
+		break_effect = {
+			add_modifier = {
+				name = ist_modern_dip_want_change
+				months = 6
+			}		
+		}		
+		
+	}
+
+	
+	ai = {
+		propose_score = {
+			value = 5
+			
+			if = {
+				limit = {
+					scope:target_country = {
+						is_subject = yes
+						NOT = { is_direct_subject_of = ROOT }
+					}
+				}
+				add = -5
+			}
+			if = {
+				limit = {
+					scope:target_country = {
+						is_player = yes
+					}
+				}
+				add = 1
+			}
+			if = {
+				limit = {
+					influence < 600
+				}
+				add = -10
+			}
+			if = {
+				limit = {
+					scope:target_country = {
+						this.gdp <= 500000
+					}
+				}
+				add = -1
+			}
+			if = {
+				limit = {
+					scope:target_country = {
+						this.gdp <= 1000000
+					}
+				}
+				add = -2
+			}
+			if = {
+				limit = {
+					scope:target_country = {
+						this.gdp <= 3000000
+					}
+				}
+				add = -2
+			}
+			if = {
+				limit = {
+					ist_modern_dip_want_count >= 3
+				}
+				add = -3
+			}
+		}
+		
+		will_break = { 
+			OR = {
+				influence <= 190
+				ist_modern_dip_want_count >= 4
+			}		
+		}
+		#will_propose = { 
+		#	always = no
+		#}
+	}
+}
+ist_dip_dont_want = {	#싫어요 가요 좀
+	requires_approval = no
+	should_notify_third_parties = no
+	show_effect_in_tooltip = yes
+
+	can_select = no
+
+	potential = {
+		is_subject = yes
+		scope:target_country = {
+			#NOT = { is_country_type = decentralized }	#찜할 나라가 최소한 산업화를 시작할수 있을 만큼 국가 구실은 해야하며
+			#country_rank < rank_value:major_power #당할 나라는 강대국 밑이어야함
+			#is_country_type = unrecognized	#동시에 미승인국이어야 함
+			#is_subject = no	#이미 누군가의 속국이면 안댐
+		}
+		#is_player = yes	#모딩 테스트용 임시 조건
+		always = no	#나중에~
+	}
+	
+	possible = {
+		is_direct_subject_of = scope:target_country
+	}
+	
+	accept_effect = {
+		#change_infamy = 5
+	}
+
+	pact = {
+		cost = 200
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		recipient_pays_maintenance = yes		
+	
+		monthly_effect = {
+			if = {
+				limit = {
+					NOT = { 
+						scope:target_country = {
+							owes_obligation_to = root			
+						}						
+					}
+				}
+				random_list = { 
+					99 = {}
+					1 = { scope:target_country = { set_owes_obligation_to = { country = root setting = yes } } }
+				}
+			}
+		}
+		
+		#break_effect = {	
+		#}		
+		
+	}
+
+	
+	ai = {
+		#will_propose = { 
+		#	always = no
+		#}
+		propose_score = {
+			value = 5
+		}
+		will_propose = {	#계약을 제안할것
+			is_direct_subject_of = scope:target_country
+		}		
+		will_break = {	#계약을 파기할것
+			#has_technology_researched = electrical_generation	#독자적 철도건설능력을 갖추고,
+			#treasury >= 100000	#국고가 10만파운드를 넘어 위약금을 치룰 형편이 된다면?
+		}
+	}
+}
+
+ist_dip_give_and_take = {	#대가를 요구하기
+	requires_approval = no
+	should_notify_third_parties = no
+	show_effect_in_tooltip = yes
+
+	potential = {
+		NOT = { is_country_type = decentralized }
+		scope:target_country = {
+			NOT = { is_country_type = decentralized }
+		}
+		#is_player = yes	#모딩 테스트용 임시 조건
+	}
+	
+	possible = {
+		scope:target_country = {
+			owes_obligation_to = root			
+		}
+		NOT = { has_variable = ist_var_gat_cooltime }
+		NOT = { has_variable = ist_var_gat_ai_cooltime }
+		NOT = { has_war_with = scope:target_country }
+		OR = {
+			is_player = yes
+			OR = {
+				AND = {
+					country_rank = rank_value:great_power
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_coal
+							level >= 1
+						}
+					}
+					scope:target_country = {
+						NOT = { is_country_type = decentralized }
+						country_rank < rank_value:major_power
+						NOT = {
+							has_diplomatic_pact = {
+								who = root
+								type = ist_dip_mining
+							}
+						}
+						any_scope_state = {
+							has_building = building_coal_mine
+							NOT = { has_modifier = ist_modern_mining_coal_state }
+							NOT = { has_modifier = ist_modern_mining_coal_state_absolute }			
+						}
+						ist_modern_dip_mining_count < 5				
+					}
+				}
+				AND = {
+					country_rank = rank_value:great_power
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_iron
+							level >= 1
+						}
+					}
+					scope:target_country = {
+						NOT = { is_country_type = decentralized }
+						country_rank < rank_value:major_power
+						NOT = {
+							has_diplomatic_pact = {
+								who = root
+								type = ist_dip_mining
+							}
+						}
+						any_scope_state = {
+							has_building = building_iron_mine
+							NOT = { has_modifier = ist_modern_mining_iron_state }
+							NOT = { has_modifier = ist_modern_mining_iron_state_absolute }			
+						}
+						ist_modern_dip_mining_count < 5				
+					}
+				}
+				AND = {
+					country_rank = rank_value:great_power
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_sulfur
+							level >= 1
+						}
+					}
+					scope:target_country = {
+						NOT = { is_country_type = decentralized }
+						country_rank < rank_value:major_power
+						NOT = {
+							has_diplomatic_pact = {
+								who = root
+								type = ist_dip_mining
+							}
+						}
+						any_scope_state = {
+							has_building = building_sulfur_mine
+							NOT = { has_modifier = ist_modern_mining_sulfur_state }
+							NOT = { has_modifier = ist_modern_mining_sulfur_state_absolute }			
+						}
+						ist_modern_dip_mining_count < 5				
+					}
+				}
+				AND = {
+					country_rank = rank_value:great_power
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_gold
+							level >= 1
+						}
+					}
+					scope:target_country = {
+						NOT = { is_country_type = decentralized }
+						country_rank < rank_value:major_power
+						NOT = {
+							has_diplomatic_pact = {
+								who = root
+								type = ist_dip_mining
+							}
+						}
+						any_scope_state = {
+							has_building = building_gold_mine
+							NOT = { has_modifier = ist_modern_mining_gold_state }
+							NOT = { has_modifier = ist_modern_mining_gold_state_absolute }			
+						}
+						ist_modern_dip_mining_count < 5				
+					}
+				}
+				AND = {
+					country_rank = rank_value:great_power
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_wood
+							level >= 1
+						}
+					}
+					scope:target_country = {
+						NOT = { is_country_type = decentralized }
+						country_rank < rank_value:major_power
+						NOT = {
+							has_diplomatic_pact = {
+								who = root
+								type = ist_dip_forest
+							}
+						}
+						any_scope_state = {
+							has_building = building_logging_camp
+							NOT = { has_modifier = ist_modern_forest_state }
+							NOT = { has_modifier = ist_modern_forest_state_absolute }		
+						}
+						ist_modern_dip_forest_count < 5				
+					}
+				}
+				AND = {
+					country_rank = rank_value:great_power
+					any_scope_state = {	#아무주에
+						any_scope_building = {
+							is_building_type = building_exploit_port_fish
+							level >= 1
+						}
+					}
+					scope:target_country = {
+						NOT = { is_country_type = decentralized }
+						country_rank < rank_value:major_power
+						NOT = {
+							has_diplomatic_pact = {
+								who = root
+								type = ist_dip_fishing
+							}
+						}
+						any_scope_state = {
+							OR = {
+								has_building = building_fishing_wharf
+								has_building = building_whaling_station
+							}
+							NOT = { has_modifier = ist_modern_fishing_fish_state }
+							NOT = { has_modifier = ist_modern_fishing_fish_state_absolute }			
+						}
+						ist_modern_dip_fishing_count < 3			
+					}
+				}
+				AND = {
+					country_rank = rank_value:great_power
+					has_technology_researched = railways
+					any_scope_state = {	#아무주에
+						has_building = building_railway
+					}
+					scope:target_country = {
+						#has_technology_researched = ist_base_railways
+						has_technology_researched = atmospheric_engine
+						NOT = { has_technology_researched = railways }
+						NOT = { is_country_type = decentralized }
+						country_rank < rank_value:major_power
+						NOT = {
+							has_diplomatic_pact = {
+								who = root
+								type = ist_dip_railway
+							}
+						}
+						ist_modern_dip_railway_count < 2
+					}
+				}
+				AND = {
+					country_rank = rank_value:great_power
+					has_technology_researched = electrical_generation
+					any_scope_state = {	#아무주에
+						has_building = building_power_plant
+					}
+					scope:target_country = {
+						#has_technology_researched = ist_base_railways
+						has_technology_researched = atmospheric_engine
+						NOT = { has_technology_researched = electrical_generation }
+						NOT = { is_country_type = decentralized }
+						country_rank < rank_value:major_power
+						NOT = {
+							has_diplomatic_pact = {
+								who = root
+								type = ist_dip_electric
+							}
+						}
+						ist_modern_dip_electric_count < 3
+					}
+				}
+				AND = {
+					scope:target_country = {
+						is_direct_subject_of = ROOT
+						OR = {
+							#has_journal_entry = je_ist_submissive_first
+							has_journal_entry = je_ist_submissive_second
+							has_journal_entry = je_ist_submissive_third
+						}
+					}
+				}
+				AND = {
+					OR = {
+						has_diplomatic_pact = {
+							who = scope:target_country
+							type = ist_dip_mining
+						}
+						has_diplomatic_pact = {
+							who = scope:target_country
+							type = ist_dip_forest
+						}
+						has_diplomatic_pact = {
+							who = scope:target_country
+							type = ist_dip_fishing
+						}
+					}
+				}
+				AND = {
+					is_direct_subject_of = scope:target_country
+					OR = {
+						has_journal_entry = je_ist_submissive_second
+						has_journal_entry = je_ist_submissive_third
+					}
+				}
+				AND = {
+					is_direct_subject_of = scope:target_country
+				}
+				AND = {
+					scope:target_country = {
+						country_rank = rank_value:great_power
+					}
+				}
+				AND = {
+					scope:target_country = {
+						country_rank = rank_value:great_power
+						"scope:target_country.ai_ideological_opinion(root)" <= 0
+					}
+				}
+				AND = {
+					OR = {
+						scope:target_country = {	#경쟁관계일것
+							has_diplomatic_pact = {
+								who = root
+								type = rivalry
+							}					
+						}
+						has_diplomatic_pact = {	#경쟁관계일것
+							who = scope:target_country
+							type = rivalry
+						}
+						AND = {	#혹은?
+							country_rank = scope:target_country.country_rank	#동급이면서,
+							scope:target_country = {
+								relations:root <= -10	#사이가 좋지 않을때
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	accept_effect = {
+		change_relations = { country = scope:target_country value = -5 }
+		every_country = {
+			limit = {
+				NOT = { THIS = ROOT }
+				country_rank = rank_value:great_power
+				has_interest_marker_in_region = scope:target_country.capital.region
+				relations:root >= -35
+			}
+			change_relations = { country = ROOT value = -3 }
+		}
+		#root = { set_owes_obligation_to = { country = scope:target_country setting = no } }
+		set_variable = {
+			name = ist_var_gat_cooltime
+			days = 90
+		}
+		if = {
+			limit = {
+				is_player = no
+				NOT = { has_variable = ist_var_gat_ai_cooltime }
+			}
+			set_variable = {
+				name = ist_var_gat_ai_cooltime
+				days = 420
+			}
+		}
+		scope:target_country = {
+			save_scope_as = ist_scope_obli_target_country
+		}
+		if = {
+			limit = {
+				is_player = yes
+			}
+			trigger_event = {
+				id = ist_modern_events.400
+			}
+		}
+		else = {
+			trigger_event = {
+				id = ist_modern_events.404
+			}
+		}
+	}
+	
+	ai = {
+		propose_score = {
+			value = 2
+			
+			if = {
+				limit = {
+					country_rank > scope:target_country.country_rank
+				}
+				add = 1
+			}
+			if = {
+				limit = {
+					year < 1840
+				}
+				add = -5
+			}
+		}
+		#will_propose = {	#계약을 제안할것
+		#	 always = yes
+		#}
+	}
+}
+
+ist_dip_help_colony = {
+	requires_approval = no
+	should_notify_third_parties = no
+
+	can_select = no
+	can_select_to_break = no
+
+	potential = {
+		always = no
+	}
+	
+	pact = {
+		cost = 50
+		show_in_outliner = yes
+		is_two_sided_pact = no
+		income_transfer = 0.03	
+	}
+}
+
+#ist_dip_test = {
+#	requires_approval = no
+#	should_notify_third_parties = no
+#	show_effect_in_tooltip = yes
+#
+#	potential = {
+#		NOT = { is_country_type = decentralized }
+#		scope:target_country = {
+#			NOT = { is_country_type = decentralized }
+#		}
+#		#always = no
+#	}
+#	
+#	possible = {
+#		NOT = {
+#			scope:target_country = {
+#				owes_obligation_to = root			
+#			}
+#		}
+#		is_player = yes	#모딩 테스트용 임시 조건
+#	}
+#
+#	accept_effect = {
+#		scope:target_country = { set_owes_obligation_to = { country = root setting = yes } }
+#		#add_journal_entry = {
+#		#	type = je_ist_puppet_point
+#		#}
+#	}
+#
+#}

@@ -1,0 +1,5994 @@
+﻿je_ist_railway_research = {
+	icon = "gfx/interface/icons/invention_icons/railways.dds"
+    group = je_group_historical_content
+	is_shown_when_inactive = {
+        can_research = ist_base_railways
+	}
+
+    possible = {
+        is_researching_technology = ist_base_railways
+	}
+    
+	#immediate = {
+	#}
+    
+    complete = {
+        has_technology_researched = ist_base_railways
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = ist_modern_events.1
+		}
+	}
+
+	should_be_pinned_by_default = yes
+}
+
+je_ist_railway_war = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+    group = je_group_historical_content
+	immediate = {
+		random_country = {
+			limit = {
+				has_variable = ist_var_railway_war_target_country
+			}
+			save_scope_as = ist_rail_war_target_country
+			remove_variable = ist_var_railway_war_target_country
+		}
+	}
+    
+    complete = {
+		has_diplomatic_pact = {
+			who = scope:ist_rail_war_target_country
+			type = humiliation
+		}
+	}
+
+	on_complete = {
+		hidden_effect = {
+			every_country = {
+				limit = {
+					country_rank >= rank_value:unrecognized_regional_power
+					NOT = { this = root }
+					NOT = { this = scope:ist_rail_war_target_country }
+				}
+				trigger_event = {
+					id = ist_modern_events.152	#다른이들에게 띄워지는 뉴우스
+					days = { 1 7 }
+				}
+			}
+			scope:ist_rail_war_target_country = {
+				change_relations = { country = ROOT value = -10 }
+				add_modifier = {
+					name = ist_modern_railway_war_loser
+					months = 96
+					#months = 1
+				}
+			}
+		}
+		scope:ist_rail_war_target_country = {
+			trigger_event = {
+				id = ist_modern_events.153
+			}
+		}
+		add_loyalists = {
+			value = 0.005
+		}
+		scope:ist_rail_war_target_country = {
+			create_diplomatic_pact = {
+				country = ROOT
+				type = ist_dip_railway_war
+			}
+			if = {	#예속화 저널 페이즈1
+				limit = {
+					NOT = { has_journal_entry = je_ist_submissive_first }	#기존에 저널 없고
+					country_rank < rank_value:major_power	#강대국 밑이고
+					is_subject = no	#자주국이면
+				}
+				add_journal_entry = {
+					type = je_ist_submissive_first
+				}
+			}
+		}
+	}
+
+	fail = {
+		always = no
+	}
+
+	on_fail = {
+		ig:ig_industrialists = {
+			add_modifier = {
+				name = ist_modern_railway_war_fail
+				months = 48
+				is_decaying = yes
+			}
+		}
+		add_radicals = {
+			value = 0.005
+		}
+	}
+	on_timeout = {
+		ig:ig_industrialists = {
+			add_modifier = {
+				name = ist_modern_railway_war_fail
+				months = 48
+				is_decaying = yes
+			}
+		}
+		add_radicals = {
+			value = 0.005
+		}
+	}
+	
+	timeout = 720
+
+	weight = 55
+
+	should_be_pinned_by_default = yes
+}
+
+je_ist_a_ground_tomorrow = {	#튜토리얼!
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+    group = je_group_historical_content
+	is_shown_when_inactive = {
+        NOT = { has_variable = ist_var_tuto_ok }
+	}
+
+    possible = {
+        year < 1840
+	}
+    
+	immediate = {
+		set_variable = {
+			name = ist_var_tuto_je
+			value = 0
+		}
+	}
+    
+    complete = {
+		scope:journal_entry = {
+			is_goal_complete = yes
+		}
+	}
+
+	on_complete = {
+		set_variable = ist_var_tuto_ok
+	}
+	
+	scripted_button = ist_button_tutorial_je
+	
+	on_weekly_pulse = {
+		effect = {
+			change_variable = {
+				name = ist_var_tuto_je
+				add = 5
+			}
+		}
+	}
+
+	current_value = {
+		value = root.var:ist_var_tuto_je
+	}	
+	goal_add_value = {
+		value = 20
+	}	
+
+	progressbar = yes
+	weight = 10000
+	
+	should_be_pinned_by_default = yes
+}
+
+je_ist_puppet_point = {	#전략지역별 점수판
+	icon = "gfx/interface/icons/lens_toolbar_icons/declare_interest.dds"
+	group = je_group_historical_content
+	is_shown_when_inactive = {
+		country_rank >= rank_value:major_power
+	}
+	
+    possible = {
+		country_rank = rank_value:great_power
+	}
+	#is_shown_when_inactive = {
+    #    is_country_type = unrecognized
+	#}
+	#
+    #possible = {
+    #    country_rank >= rank_value:unrecognized_regional_power
+	#}
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_europe_west }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_europe_west
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_europe_east }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_europe_east
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_america_north }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_america_north
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_america_mid }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_america_mid
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_america_south }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_america_south
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_africa_north }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_africa_north
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_africa_west }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_africa_west
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_africa_east }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_africa_east
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_middle_east }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_middle_east
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_asia_north }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_asia_north
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_asia_india }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_asia_india
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_asia_east }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_asia_east
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_asia_china }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_asia_china
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_asia_south }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_asia_south
+				value = 10
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = ist_var_puppet_point_oceania_oceania }
+			}
+			set_variable = {
+				name = ist_var_puppet_point_oceania_oceania
+				value = 10
+			}
+		}
+	}
+	
+	complete = {
+		always = no
+	}
+
+	#on_complete = {
+	#}
+
+	#fail = {
+	#}
+
+	#on_fail = {
+	#}
+
+	on_monthly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					ist_trigger_region_europe_west = yes
+					100 <= var:ist_var_puppet_point_europe_west
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_europe_east = yes
+					100 <= var:ist_var_puppet_point_europe_east
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_north = yes
+					100 <= var:ist_var_puppet_point_america_north
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_mid = yes
+					100 <= var:ist_var_puppet_point_america_mid
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_south = yes
+					100 <= var:ist_var_puppet_point_america_south
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_north = yes
+					100 <= var:ist_var_puppet_point_africa_north
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_west = yes
+					100 <= var:ist_var_puppet_point_africa_west
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_east = yes
+					100 <= var:ist_var_puppet_point_africa_east
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_middle_east = yes
+					100 <= var:ist_var_puppet_point_middle_east
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_north = yes
+					100 <= var:ist_var_puppet_point_asia_north
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_india = yes
+					100 <= var:ist_var_puppet_point_asia_india
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_east = yes
+					100 <= var:ist_var_puppet_point_asia_east
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_china = yes
+					100 <= var:ist_var_puppet_point_asia_china
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_south = yes
+					100 <= var:ist_var_puppet_point_asia_south
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_oceania_oceania = yes
+					100 <= var:ist_var_puppet_point_oceania_oceania
+				}
+				set_variable = ist_var_can_activate_decree
+			}
+			########
+			if = {
+				limit = {
+					ist_trigger_region_europe_west = yes
+					100 > var:ist_var_puppet_point_europe_west
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_europe_east = yes
+					100 > var:ist_var_puppet_point_europe_east
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_north = yes
+					100 > var:ist_var_puppet_point_america_north
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_mid = yes
+					100 > var:ist_var_puppet_point_america_mid
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_south = yes
+					100 > var:ist_var_puppet_point_america_south
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_north = yes
+					100 > var:ist_var_puppet_point_africa_north
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_west = yes
+					100 > var:ist_var_puppet_point_africa_west
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_east = yes
+					100 > var:ist_var_puppet_point_africa_east
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_middle_east = yes
+					100 > var:ist_var_puppet_point_middle_east
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_north = yes
+					100 > var:ist_var_puppet_point_asia_north
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_india = yes
+					100 > var:ist_var_puppet_point_asia_india
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_east = yes
+					100 > var:ist_var_puppet_point_asia_east
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_china = yes
+					100 > var:ist_var_puppet_point_asia_china
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_south = yes
+					100 > var:ist_var_puppet_point_asia_south
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			if = {
+				limit = {
+					ist_trigger_region_oceania_oceania = yes
+					100 > var:ist_var_puppet_point_oceania_oceania
+				}
+				remove_variable = ist_var_can_activate_decree
+			}
+			########
+			if = {
+				limit = {
+					ist_modern_core_decree_avtivate_count >= 1
+				}
+				if = {
+					limit = {
+						ist_trigger_region_europe_west = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_europe_west
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_europe_east = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_europe_east
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_america_north = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_america_north
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_america_mid = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_america_mid
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_america_south = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_america_south
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_africa_north = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_africa_north
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_africa_west = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_africa_west
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_africa_east = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_africa_east
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_middle_east = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_middle_east
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_asia_north = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_asia_north
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_asia_india = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_asia_india
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_asia_east = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_asia_east
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_asia_china = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_asia_china
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_asia_south = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_asia_south
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+				if = {
+					limit = {
+						ist_trigger_region_oceania_oceania = yes
+					}
+					change_variable = {
+						name = ist_var_puppet_point_oceania_oceania
+						subtract = ist_modern_core_decree_avtivate_count
+					}
+				}
+			}
+			########최솟값 0
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_europe_west
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_europe_east
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_america_north
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_america_mid
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_america_south
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_africa_north
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_africa_west
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_africa_east
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_middle_east
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_asia_north
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_asia_india
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_asia_east
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_asia_china
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_asia_south
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					multiply = 0
+				}
+			}
+			if = {
+				limit = {
+					0 > var:ist_var_puppet_point_oceania_oceania
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					multiply = 0
+				}
+			}
+			if = {	#일본 전용 저널퀘
+				limit = {
+					has_variable = ist_var_je_japan_asia_clear
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = 100
+				}
+				remove_variable = ist_var_je_japan_asia_clear
+			}
+		}
+	}
+	
+	on_yearly_pulse = {
+		effect = {
+			##수도가 위치한 범전략지역에서는 자동으로 연간 12점씩 추가
+			if = {
+				limit = {
+					ist_trigger_region_europe_west = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_europe_east = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_north = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_mid = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_south = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_north = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_west = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_east = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_middle_east = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_north = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_india = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_east = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_china = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_south = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					add = 12
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_oceania_oceania = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					add = 12
+				}
+			}
+			##혁명 후 보정치
+			if = {
+				limit = {
+					ist_trigger_region_europe_west = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_europe_east = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_north = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_mid = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_south = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_north = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_west = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_east = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_middle_east = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_north = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_india = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_east = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_china = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_south = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					add = 24
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_oceania_oceania = yes
+					OR = {
+						has_variable = ist_var_civilwar_won_influence
+						has_modifier = ist_modern_great_power_nova
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					add = 24
+				}
+			}
+			##악명별 보정치
+			if = {
+				limit = {
+					infamy >= 75
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					add = -10
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					add = -10
+				}
+			}
+			if = {
+				limit = {
+					infamy >= 100
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					add = -5
+				}
+			}
+			if = {
+				limit = {
+					infamy >= 125
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					add = -5
+				}
+			}
+			if = {
+				limit = {
+					infamy >= 150
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					add = -5
+				}
+			}
+			if = {
+				limit = {
+					infamy >= 200
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					add = -5
+				}
+			}
+			####난이도 보정치
+			if = {
+				limit = {
+					has_game_rule = ist_limit_develop_rule_hard
+					is_player = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					add = -5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					add = -5
+				}
+			}
+			if = {
+				limit = {
+					has_game_rule = ist_limit_develop_rule_super_easy
+					is_player = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_west
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_north
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_north
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_west
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_africa_east
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_middle_east
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_north
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_india
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_east
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_china
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_asia_south
+					add = 5
+				}
+				change_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					add = 5
+				}
+			}
+		}
+	}
+
+	weight = 99
+
+	should_be_pinned_by_default = yes
+}
+
+je_ist_rising_sun = {
+	icon = "gfx/interface/icons/war_goals/force_recognition.dds"
+    group = je_group_historical_content
+	is_shown_when_inactive = {
+        is_country_type = unrecognized
+	}
+
+    possible = {
+        country_rank >= rank_value:unrecognized_regional_power
+	}
+    
+	#immediate = {
+	#}
+    
+    complete = {
+        is_country_type = recognized
+		country_rank >= rank_value:major_power
+	}
+
+	on_complete = {
+		add_modifier = {
+			name = ist_modern_great_power_nova
+			months = 24
+			is_decaying = yes
+		}
+		if = {
+			limit = {
+				has_global_variable = ist_global_var_civilizing_mission_invented
+			}
+			if = {
+				limit = {
+					ist_trigger_region_europe_west = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_europe_west
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_europe_east = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_europe_east
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_north = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_america_north
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_mid = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_america_mid
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_south = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_america_south
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_north = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_africa_north
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_west = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_africa_west
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_east = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_africa_east
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_middle_east = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_middle_east
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_north = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_north
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_india = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_india
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_east = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_east
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_china = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_china
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_south = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_south
+					value = 250
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_oceania_oceania = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					value = 250
+				}
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					ist_trigger_region_europe_west = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_europe_west
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_europe_east = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_europe_east
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_north = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_america_north
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_mid = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_america_mid
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_america_south = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_america_south
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_north = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_africa_north
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_west = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_africa_west
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_africa_east = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_africa_east
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_middle_east = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_middle_east
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_north = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_north
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_india = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_india
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_east = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_east
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_china = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_china
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_asia_south = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_asia_south
+					value = 100
+				}
+			}
+			if = {
+				limit = {
+					ist_trigger_region_oceania_oceania = yes
+				}
+				set_variable = {
+					name = ist_var_puppet_point_oceania_oceania
+					value = 100
+				}
+			}
+		}
+	}
+
+	should_be_pinned_by_default = yes
+}
+
+##########
+##예속화 저널
+##########
+
+# 페이즈 1
+je_ist_submissive_first = {	#자주국에서 피보호국으로
+	icon = "gfx/interface/icons/lens_toolbar_icons/protectorate.dds"
+	group = je_group_historical_content
+	#is_shown_when_inactive = {
+	#}
+	
+    #possible = {
+	#}
+
+	immediate = {
+		set_variable = {
+			name = ist_var_puppet_phase_1
+			value = 50
+		}
+	}
+
+	complete = {
+		#always = no
+		NOT = {	#강대국 이상이 아닌 상태서
+			country_rank >= rank_value:major_power
+		}
+		scope:journal_entry = {	#진행바 다 채우면
+			is_goal_complete = yes
+		}
+		NOT = { has_global_variable = ist_global_var_puppet_event_table }	#협상테이블은 한번에 하나씩 차근차근!
+		
+		#초대장 자격 있는 열강이 하나는 있어야함
+		any_country = {	#초대장을 전송합니다
+			country_rank = rank_value:great_power	#우선 열강이어야 하고...
+			has_journal_entry = je_ist_puppet_point	#영향권 저널이 활성화 되어 있어야 하고...
+			OR = {
+				any_scope_diplomatic_pact = {	#5종의 이권중 한가지를 갈취중이거나
+					is_diplomatic_action_type = ist_dip_railway
+					any_participant = {	#이 메인디쉬 국가를 상대로
+						THIS = ROOT
+					}
+				}
+				any_scope_diplomatic_pact = {
+					is_diplomatic_action_type = ist_dip_mining
+					any_participant = {	#이 메인디쉬 국가를 상대로
+						THIS = ROOT
+					}
+				}
+				any_scope_diplomatic_pact = {
+					is_diplomatic_action_type = ist_dip_forest
+					any_participant = {	#이 메인디쉬 국가를 상대로
+						THIS = ROOT
+					}
+				}
+				any_scope_diplomatic_pact = {
+					is_diplomatic_action_type = ist_dip_fishing
+					any_participant = {	#이 메인디쉬 국가를 상대로
+						THIS = ROOT
+					}
+				}
+				any_scope_diplomatic_pact = {
+					is_diplomatic_action_type = ist_dip_electric
+					any_participant = {	#이 메인디쉬 국가를 상대로
+						THIS = ROOT
+					}
+				}
+				#혹은 침탈중인 이권이 없더라도 제물 국가의 수도가 위치한 전략지역에 관심이 가 있는 경우에
+				has_interest_marker_in_region = ROOT.capital.region
+			}
+		}
+	}
+
+	on_complete = {
+		#자 협상의 장이 열렸습니다!
+		set_global_variable = {	#이 갬블에서 모든 플레이어가 지금까지 태운 총 영향력
+			name = ist_global_var_puppet_event_table
+			value = 0	#초기판돈 : 0 영향력
+		}
+		set_global_variable = {	#이 갬블에서 제시된 영향력 최고액수(자기 차례때 이전턴까지 낸 칩+ 이번턴에 낸 칩이 넘어야 할 양)
+			name = ist_global_var_puppet_event_table_highest
+			value = 0
+		}
+		capital = {	#우선 제물이 될 국가의 수도 주를 저장해두고
+			save_scope_as = ist_scope_puppet_table_cap
+		}
+		save_scope_as = ist_scope_puppet_table_country	#국가도 저장해두고
+		#이 아래는 해당 외교전의 범전략지역을 체크하는 코드
+		if = {
+			limit = {
+				ist_trigger_region_europe_west = yes
+			}
+			set_global_variable = ist_global_var_table_europe_west
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_europe_east = yes
+			}
+			set_global_variable = ist_global_var_table_europe_east
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_america_north = yes
+			}
+			set_global_variable = ist_global_var_table_america_north
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_america_mid = yes
+			}
+			set_global_variable = ist_global_var_table_america_mid
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_america_south = yes
+			}
+			set_global_variable = ist_global_var_table_america_south
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_africa_north = yes
+			}
+			set_global_variable = ist_global_var_table_africa_north
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_africa_west = yes
+			}
+			set_global_variable = ist_global_var_table_africa_west
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_africa_east = yes
+			}
+			set_global_variable = ist_global_var_table_africa_east
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_middle_east = yes
+			}
+			set_global_variable = ist_global_var_table_middle_east
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_asia_north = yes
+			}
+			set_global_variable = ist_global_var_table_asia_north
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_asia_india = yes
+			}
+			set_global_variable = ist_global_var_table_asia_india
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_asia_east = yes
+			}
+			set_global_variable = ist_global_var_table_asia_east
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_asia_china = yes
+			}
+			set_global_variable = ist_global_var_table_asia_china
+		}
+		else_if = {
+			limit = {
+				ist_trigger_region_asia_south = yes
+			}
+			set_global_variable = ist_global_var_table_asia_south
+		}
+		else = {
+			limit = {
+				ist_trigger_region_oceania_oceania = yes
+			}
+			set_global_variable = ist_global_var_table_oceania_oceania
+		}
+		#이제 초대장 코드
+		every_country = {	#초대장을 전송합니다
+			limit = {	#참가자격은?
+				country_rank = rank_value:great_power	#우선 열강이어야 하고...
+				has_journal_entry = je_ist_puppet_point	#영향권 저널이 활성화 되어 있어야 하고...
+				OR = {
+					any_scope_diplomatic_pact = {	#5종의 이권중 한가지를 갈취중이거나
+						is_diplomatic_action_type = ist_dip_railway
+						any_participant = {	#이 메인디쉬 국가를 상대로
+							THIS = ROOT
+						}
+					}
+					any_scope_diplomatic_pact = {
+						is_diplomatic_action_type = ist_dip_mining
+						any_participant = {	#이 메인디쉬 국가를 상대로
+							THIS = ROOT
+						}
+					}
+					any_scope_diplomatic_pact = {
+						is_diplomatic_action_type = ist_dip_forest
+						any_participant = {	#이 메인디쉬 국가를 상대로
+							THIS = ROOT
+						}
+					}
+					any_scope_diplomatic_pact = {
+						is_diplomatic_action_type = ist_dip_fishing
+						any_participant = {	#이 메인디쉬 국가를 상대로
+							THIS = ROOT
+						}
+					}
+					any_scope_diplomatic_pact = {
+						is_diplomatic_action_type = ist_dip_electric
+						any_participant = {	#이 메인디쉬 국가를 상대로
+							THIS = ROOT
+						}
+					}
+					#혹은 침탈중인 이권이 없더라도 제물 국가의 수도가 위치한 전략지역에 관심이 가 있는 경우에
+					has_interest_marker_in_region = scope:ist_scope_puppet_table_cap.region
+				}
+			}
+			trigger_event = {	#초대장 전송 이벤트!
+				id = ist_modern_events.300
+			}
+		}
+		trigger_event = {	#참가자끼리만 걸러서 1번선수 정하는 이벤트
+			id = ist_modern_events.301
+			days = 32
+		}
+	}
+
+	fail = {
+		OR = {
+			is_subject = yes	#이미 누군가의 속국이 되어버렸거나
+			AND = {
+				var:ist_var_puppet_phase_1 <= 0	#예속화 진행도를 전부 없앤 상태에서
+				country_rank >= rank_value:major_power	#강대국 이상 등급으로 올라서서 탈출하거나
+			}
+			AND = {
+				var:ist_var_puppet_phase_1 <= 0	#혹은 예속화 진행도를 전부 없앤 상태에서
+				ist_modern_dip_railway_count < 1
+				ist_modern_dip_mining_count < 1
+				ist_modern_dip_forest_count < 1
+				ist_modern_dip_fishing_count < 1
+				ist_modern_dip_electric_count < 1
+			}
+		}
+	}
+
+	#on_fail = {
+	#}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_ist_puppet_phase_1_verylow
+				trigger = {
+					#root.var:ist_var_puppet_phase_1 >= 0
+					root.var:ist_var_puppet_phase_1 < 50
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_1_low
+				trigger = {
+					root.var:ist_var_puppet_phase_1 >= 50
+					root.var:ist_var_puppet_phase_1 < 120
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_1_medium
+				trigger = {
+					root.var:ist_var_puppet_phase_1 >= 120
+					root.var:ist_var_puppet_phase_1 < 180
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_1_high
+				trigger = {
+					root.var:ist_var_puppet_phase_1 >= 180
+					root.var:ist_var_puppet_phase_1 < 240
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_1_veryhigh
+				trigger = {
+					root.var:ist_var_puppet_phase_1 >= 240
+					root.var:ist_var_puppet_phase_1 < 300
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_1_max
+				trigger = {
+					root.var:ist_var_puppet_phase_1 >= 300
+				}
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			##노예제 폐지를 이식받아서 개혁했으면 +50 받고 시작
+			if = {
+				limit = {
+					has_variable = ist_var_slave_law_token
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = 50
+				}
+				remove_variable = ist_var_slave_law_token
+			}
+			
+			if = {
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					country_rank >= rank_value:major_power	#강대국 이상 등급으로 올라서면 탈출 시작!
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -10
+				}
+			}
+			if = {
+				limit = {	#자력갱생으로 돌아와도 탈출 시작!
+					var:ist_var_puppet_phase_1 >= 0
+					AND = {
+						ist_modern_dip_railway_count < 1
+						ist_modern_dip_mining_count < 1
+						ist_modern_dip_forest_count < 1
+						ist_modern_dip_fishing_count < 1
+						ist_modern_dip_electric_count < 1
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -1
+				}
+			}
+			if = {
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					country_rank = rank_value:unrecognized_major_power	#미승인 강대국은 날먹 금지
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -2
+				}
+			}
+			set_variable = {
+				name = ist_var_dip_all_count
+				value = ist_modern_dip_all_count
+			}
+			set_variable = {
+				name = ist_var_dip_all_half_count
+				value = ist_modern_dip_all_half_count
+			}
+			set_variable = {
+				name = ist_var_dip_want_half_count
+				value = ist_modern_dip_want_half_count
+			}
+		}
+	}
+	
+	on_monthly_pulse = {	#예속화 진행도 증가 조건들
+		effect = {
+			if = {	#세계에 문명화 사명 사회기술이 등장했다면?
+				limit = {
+					has_global_variable = ist_global_var_civilizing_mission_invented
+				}
+				change_variable = {	#5종 계약 하나당 1씩 예속화 진행도를 주고
+					name = ist_var_puppet_phase_1
+					add = ist_modern_dip_all_count
+				}
+			}
+			if = {	#아직 그런 시대가 아니라면?
+				limit = {
+					NOT = { has_global_variable = ist_global_var_civilizing_mission_invented }
+				}
+				change_variable = {	#계약당 0.5씩 준다
+					name = ist_var_puppet_phase_1
+					add = ist_modern_dip_all_half_count
+				}
+			}
+			if = {	#난이도에 따라-super_easy
+				limit = {
+					has_game_rule = ist_limit_develop_rule_super_easy
+					is_player = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -0.5
+				}
+			}
+			if = {	#난이도에 따라-hard
+				limit = {
+					has_game_rule = ist_limit_develop_rule_hard
+
+					is_player = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = 0.5
+				}
+			}
+			if = {	#국가정통성이 25 이하라면?
+				limit = {
+					government_legitimacy <= 25
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = 0.5
+				}
+			}
+			if = {	#국가 채무가 한도의 75% 이상이라면?
+				limit = {
+					scaled_debt > 0.75
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = 0.5
+				}
+			}
+			if = {	#예속화 기반 다지기 외교빨대가 하나 이상 박혀잇다면???
+				limit = {
+					ist_modern_dip_want_count >= 1
+				}
+				change_variable = {	#빨대당 0.5씩
+					name = ist_var_puppet_phase_1
+					add = ist_modern_dip_want_half_count
+				}
+			}
+			if = {	#문화배척 or 다문화법이 있다면?
+				limit = {
+					OR = {
+						has_law = law_type:law_cultural_exclusion
+						has_law = law_type:law_multicultural
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = 0.5
+				}
+			}
+			if = {	#자유무역법이 있다면?
+				limit = {
+					has_law = law_type:law_free_trade
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = 0.5
+				}
+			}
+			if = {	#군부 영향력이 7.5% 밑이라면?
+				limit = {
+					ig:ig_armed_forces = {
+						ig_clout < 0.075
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = 0.5
+				}
+			}
+			if = {	#공뭔 월급이 너무 적다면?
+				limit = {
+					government_wage_level < medium
+				}
+				if = {	#공뭔 월급이 최저라면?
+					limit = {
+						government_wage_level = very_low
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = 0.25
+					}
+				}
+			}
+			if = {	#군인 월급이 너무 적다면?
+				limit = {
+					military_wage_level < medium
+				}
+				if = {	#군인 월급이 최저라면?
+					limit = {
+						military_wage_level = very_low
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = 0.25
+					}
+				}
+			}
+			if = {	#지도자 인기가 -25 이하라면?
+				limit = {
+					ruler.popularity <= -25
+				}
+				if = {	#지도자 인기가 -50 이하라면?
+					limit = {
+						ruler.popularity <= -50
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = 0.25
+					}
+				}
+			}
+			####이밑으론 예속화 진행도 감속 조건들
+			if = {	#승인국이면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					is_country_type = recognized
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -1
+				}
+			}
+			if = {	#너무 크면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					THIS.GDP >= 100000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -1.5
+				}
+			}
+			if = {	#너무 크면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					total_population >= 100000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -1.5
+				}
+			}
+			if = {	#너무 크면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					THIS.GDP >= 150000000
+					total_population >= 200000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -0.5
+				}
+			}
+			if = {	#국가정통성이 75 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					government_legitimacy >= 75
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -0.5
+				}
+			}
+			if = {	#현금보유고가 1M 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					gold_reserves >= 1000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -0.25
+				}
+			}
+			if = {	#현금보유고가 최대효율 한도를 넘어서까지 쌓여가고있다면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					gold_reserves > gold_reserves_limit
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -0.25
+				}
+			}
+			if = {	#자문화중심주의 or 민족국가법이 있다면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					OR = {
+						has_law = law_type:law_national_supremacy
+						has_law = law_type:law_ethnostate
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -0.5
+				}
+			}
+			if = {	#고립주의법이 있다면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					has_law = law_type:law_isolationism
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -0.5
+				}
+			}
+			if = {	#군부 영향력이 12.5% 위라면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					ig:ig_armed_forces = {
+						ig_clout > 0.125
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_1
+					add = -0.5
+				}
+			}
+			if = {	#공뭔 월급이 너무 많다면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					government_wage_level > medium
+				}
+				if = {	#공뭔 월급이 최대라면?
+					limit = {
+						government_wage_level = very_high
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = -0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = -0.25
+					}
+				}
+			}
+			if = {	#군인 월급이 너무 많다면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					military_wage_level > medium
+				}
+				if = {	#군인 월급이 최저라면?
+					limit = {
+						military_wage_level = very_high
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = -0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = -0.25
+					}
+				}
+			}
+			if = {	#지도자 인기가 25 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_1 >= 0
+					ruler.popularity >= 25
+				}
+				if = {	#지도자 인기가 50 이상이라면?
+					limit = {
+						ruler.popularity >= 50
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = -0.50
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_1
+						add = -0.25
+					}
+				}
+			}
+		}
+	}
+
+	current_value = {
+		#value = ist_modern_puppet_phase_1
+		value = var:ist_var_puppet_phase_1
+	}
+
+	goal_add_value = {
+		value = 300
+	}
+
+	progressbar = yes
+
+	weight = 50
+
+	should_be_pinned_by_default = yes
+}
+# 페이즈 2
+je_ist_submissive_second = {	#피보호국에서 괴뢰국으로
+	icon = "gfx/interface/icons/war_goals/make_puppet.dds"
+	group = je_group_historical_content
+	is_shown_when_inactive = {
+		OR = {
+			is_subject_type = subject_type_protectorate
+			is_subject_type = subject_type_dominion
+		}
+	}
+	
+    possible = {
+		OR = {
+			is_subject_type = subject_type_protectorate
+			is_subject_type = subject_type_dominion
+		}
+	}
+
+	immediate = {
+		set_variable = {
+			name = ist_var_puppet_phase_2
+			value = 0
+		}
+	}
+
+	complete = {
+		always = no
+	}
+
+	on_complete = {
+	}
+
+	fail = {
+		OR = {
+			AND = {
+				var:ist_var_puppet_phase_2 < 0
+				is_subject = no
+			}
+			is_subject_type = subject_type_puppet
+		}
+	}
+
+	#on_fail = {
+	#}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_ist_puppet_phase_2_verylow
+				trigger = {
+					root.var:ist_var_puppet_phase_2 < 30
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_2_low
+				trigger = {
+					root.var:ist_var_puppet_phase_2 >= 30
+					root.var:ist_var_puppet_phase_2 < 60
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_2_medium
+				trigger = {
+					root.var:ist_var_puppet_phase_2 >= 60
+					root.var:ist_var_puppet_phase_2 < 90
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_2_high
+				trigger = {
+					root.var:ist_var_puppet_phase_2 >= 90
+					root.var:ist_var_puppet_phase_2 < 120
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_2_veryhigh
+				trigger = {
+					root.var:ist_var_puppet_phase_2 >= 120
+					root.var:ist_var_puppet_phase_2 < 150
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_2_max
+				trigger = {
+					root.var:ist_var_puppet_phase_2 >= 150
+				}
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = ist_var_dip_want_count
+				value = ist_modern_dip_want_count
+			}
+			if = {	#괴뢰국화 제안서 발송
+				limit = {
+					var:ist_var_puppet_phase_2 >= 150
+					NOT = { has_variable = ist_var_puppet_phase_2_waiting }
+					NOT = { has_global_variable = ist_global_var_puppet_phase_2_waiting }
+					any_country = {
+						country_rank >= rank_value:major_power
+						#has_subject_relation_with = root	#이건 반대로 체크함
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = dominion
+							}
+						}
+					}
+				}
+				set_variable = {
+					name = ist_var_puppet_phase_2_waiting
+					days = 32
+				}
+				set_global_variable = {
+					name = ist_global_var_puppet_phase_2_waiting
+					days = 62
+				}
+				save_scope_as = ist_scope_puppet_prot_country	#국가도 저장해두고
+				every_country = {
+					limit = {
+						country_rank >= rank_value:major_power
+						#has_subject_relation_with = root
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = dominion
+							}
+						}
+					}
+					save_scope_as = ist_scope_puppet_upper_country
+					trigger_event = {
+						id = ist_modern_events.330
+					}
+				}
+			}
+			
+			if = {
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					OR = {
+						is_subject = no
+						country_rank >= rank_value:major_power	#강대국 이상 등급으로 올라서면 탈출 시작!
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -10
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {	#예속화 진행도 증가 조건들
+		effect = {
+			if = {	#세계에 문명화 사명 기술 등장!
+				limit = {
+					has_global_variable = ist_global_var_civilizing_mission_invented
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.5
+				}
+			}
+			if = {	#종주국 악명에 따라
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						infamy >= 75
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#종주국 악명에 따라
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						infamy >= 125
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#난이도에 따라-내가 속국일때-super_easy
+				limit = {
+					has_game_rule = ist_limit_develop_rule_super_easy
+					is_player = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.25
+				}
+			}
+			if = {	#난이도에 따라-내가 속국일때-hard
+				limit = {
+					has_game_rule = ist_limit_develop_rule_hard
+
+					is_player = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.25
+				}
+			}
+			if = {	#난이도에 따라-내가 종주국일때-super_easy
+				limit = {
+					has_game_rule = ist_limit_develop_rule_super_easy
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						is_player = yes
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.25
+				}
+			}
+			if = {	#난이도에 따라-내가 종주국일때-hard
+				limit = {
+					has_game_rule = ist_limit_develop_rule_hard
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						is_player = yes
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.25
+				}
+			}
+			if = {	#피보호국이 되길 원한 나라였다면?
+				limit = {
+					has_modifier = ist_modern_plz_protect_me
+				}
+				change_variable = {	#5년동안 매달 1씩 증가, 총 60
+					name = ist_var_puppet_phase_2
+					add = 1.0
+				}
+			}
+			if = {	#지배국과 같은 범전략지역에 위치한다면?????????
+				limit = {
+					OR = {
+						AND = {
+							ist_trigger_region_europe_west = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_europe_west = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_europe_east = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_europe_east = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_america_north = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_america_north = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_america_mid = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_america_mid = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_america_south = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_america_south = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_africa_north = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_africa_north = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_africa_west = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_africa_west = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_africa_east = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_africa_east = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_middle_east = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_middle_east = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_north = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_asia_north = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_india = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_asia_india = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_east = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_asia_east = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_china = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_asia_china = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_south = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_asia_south = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_oceania_oceania = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								OR = {
+									has_diplomatic_pact = {
+										who = root
+										type = protectorate
+									}
+									has_diplomatic_pact = {
+										who = root
+										type = dominion
+									}
+								}
+								ist_trigger_region_oceania_oceania = yes
+							}
+						}
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.5
+				}
+			}
+			if = {	#지배국이 신분증명서 기술 연구!
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = dominion
+							}
+						}
+						has_technology_researched = identification_documents
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.50
+				}
+			}
+			if = {	#지배국이 라디오 기술 연구!
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = dominion
+							}
+						}
+						has_technology_researched = radio
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.5
+				}
+			}
+			if = {	#지배국이 전자동기관총 기술 연구!
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = dominion
+							}
+						}
+						has_technology_researched = automatic_machine_guns
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.5
+				}
+			}
+			if = {	#지배국이 비행선 기술 연구!
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = dominion
+							}
+						}
+						has_technology_researched = zeppelins
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.5
+				}
+			}
+			if = {	#지배국이 사회보장부 투자단계 3 이상이라면?
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = dominion
+							}
+						}
+						institution_investment_level = {
+							institution = institution_social_security
+							value >= 3
+						}
+					}
+				}
+				if = {	#사회보장부 5 단계 이상이라면?
+					limit = {
+						any_country = {
+							country_rank >= rank_value:major_power
+							OR = {
+								has_diplomatic_pact = {
+									who = root
+									type = protectorate
+								}
+								has_diplomatic_pact = {
+									who = root
+									type = dominion
+								}
+							}
+							institution_investment_level = {
+								institution = institution_social_security
+								value >= 5
+							}
+						}
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.25
+					}
+				}
+			}
+			if = {	#지배국이 직장안전부 투자단계 3 이상이라면?
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = dominion
+							}
+						}
+						institution_investment_level = {
+							institution = institution_workplace_safety
+							value >= 3
+						}
+					}
+				}
+				if = {	#직장안전부 5 단계 이상이라면?
+					limit = {
+						any_country = {
+							country_rank >= rank_value:major_power
+							OR = {
+								has_diplomatic_pact = {
+									who = root
+									type = protectorate
+								}
+								has_diplomatic_pact = {
+									who = root
+									type = dominion
+								}
+							}
+							institution_investment_level = {
+								institution = institution_workplace_safety
+								value >= 5
+							}
+						}
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.25
+					}
+				}
+			}
+			if = {	#국가 채무가 한도의 50% 이상이라면?
+				limit = {
+					scaled_debt > 0.50
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.5
+				}
+			}
+			if = {	#예속화 기반 다지기 외교빨대가 하나 이상 박혀잇다면???
+				limit = {
+					ist_modern_dip_want_count >= 1
+				}
+				change_variable = {	#빨대당 1씩
+					name = ist_var_puppet_phase_2
+					add = ist_modern_dip_want_count
+				}
+			}
+			if = {	#자유무역법이 있다면?
+				limit = {
+					has_law = law_type:law_free_trade
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = 0.5
+				}
+			}
+			if = {	#공뭔 월급이 너무 적다면?
+				limit = {
+					government_wage_level < medium
+				}
+				if = {	#공뭔 월급이 최저라면?
+					limit = {
+						government_wage_level = very_low
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.25
+					}
+				}
+			}
+			if = {	#군인 월급이 너무 적다면?
+				limit = {
+					military_wage_level < medium
+				}
+				if = {	#군인 월급이 최저라면?
+					limit = {
+						military_wage_level = very_low
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.25
+					}
+				}
+			}
+			if = {	#지도자 인기가 -25 이하라면?
+				limit = {
+					ruler.popularity <= -25
+				}
+				if = {	#지도자 인기가 -50 이하라면?
+					limit = {
+						ruler.popularity <= -50
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = 0.25
+					}
+				}
+			}
+			####이밑으론 예속화 진행도 감속 조건들
+			if = {	#세계에 문명화 사명 기술 미등장
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					NOT = { has_global_variable = ist_global_var_civilizing_mission_invented }
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#피지배국이 범민족주의 기술 연구!
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					has_technology_researched = pan-nationalism
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#피지배국이 무정부주의 기술 연구!
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					has_technology_researched = anarchism
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#피지배국이 사회주의 기술 연구!
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					has_technology_researched = socialism
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#현금보유고가 최대효율 한도를 넘어서까지 쌓여가고있다면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					gold_reserves > gold_reserves_limit
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#자문화중심주의 or 민족국가법이 있다면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					OR = {
+						has_law = law_type:law_national_supremacy
+						has_law = law_type:law_ethnostate
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#고립주의법이 있다면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					has_law = law_type:law_isolationism
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#공뭔 월급이 너무 많다면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					government_wage_level > medium
+				}
+				if = {	#공뭔 월급이 최대라면?
+					limit = {
+						government_wage_level = very_high
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = -0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = -0.25
+					}
+				}
+			}
+			if = {	#군인 월급이 너무 많다면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					military_wage_level > medium
+				}
+				if = {	#군인 월급이 최저라면?
+					limit = {
+						military_wage_level = very_high
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = -0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = -0.25
+					}
+				}
+			}
+			if = {	#지도자 인기가 25 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					ruler.popularity >= 25
+				}
+				if = {	#지도자 인기가 50 이상이라면?
+					limit = {
+						ruler.popularity >= 50
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = -0.50
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_2
+						add = -0.25
+					}
+				}
+			}
+			if = {	#인구가 2500만 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					total_population >= 25000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#인구가 5000만 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					total_population >= 50000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#인구가 1억 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					total_population >= 100000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#인구가 1억5천 + GDP 7500만 이상이라면? + AI
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					total_population >= 150000000
+					THIS.GDP >= 75000000
+					is_player = no
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -0.5
+				}
+			}
+			if = {	#내 지배국도 열강 따까리라면?
+				limit = {
+					var:ist_var_puppet_phase_2 >= 0
+					any_country = {
+						OR = {
+							country_rank < rank_value:major_power
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = dominion
+							}
+						}
+						is_subject = yes
+						NOT = { is_subject_of = ROOT }
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_2
+					add = -1.0
+				}
+			}
+		}
+	}
+
+	current_value = {
+		#value = ist_modern_puppet_phase_2
+		value = var:ist_var_puppet_phase_2
+	}
+
+	goal_add_value = {
+		value = 150
+	}
+
+	progressbar = yes
+
+	weight = 50
+
+	should_be_pinned_by_default = yes
+}
+# 페이즈 3
+je_ist_submissive_third = {	#괴뢰국에서 합병으로
+	icon = "gfx/interface/icons/war_goals/annex_country.dds"
+	group = je_group_historical_content
+	is_shown_when_inactive = {
+		is_subject_type = subject_type_puppet
+	}
+	
+    possible = {
+		is_subject_type = subject_type_puppet
+	}
+
+	immediate = {
+		set_variable = {
+			name = ist_var_puppet_phase_3
+			value = 0
+		}
+	}
+
+	complete = {
+		always = no
+	}
+
+	#on_complete = {
+	#}
+
+	fail = {
+		AND = {
+			var:ist_var_puppet_phase_3 < 0
+			NOT = { is_subject_type = subject_type_puppet }
+		}
+	}
+
+	#on_fail = {
+	#}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_ist_puppet_phase_3_verylow
+				trigger = {
+					root.var:ist_var_puppet_phase_3 < 20
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_3_low
+				trigger = {
+					root.var:ist_var_puppet_phase_3 >= 20
+					root.var:ist_var_puppet_phase_3 < 40
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_3_medium
+				trigger = {
+					root.var:ist_var_puppet_phase_3 >= 40
+					root.var:ist_var_puppet_phase_3 < 60
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_3_high
+				trigger = {
+					root.var:ist_var_puppet_phase_3 >= 60
+					root.var:ist_var_puppet_phase_3 < 80
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_3_veryhigh
+				trigger = {
+					root.var:ist_var_puppet_phase_3 >= 80
+					root.var:ist_var_puppet_phase_3 < 100
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_puppet_phase_3_max
+				trigger = {
+					root.var:ist_var_puppet_phase_3 >= 100
+				}
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = ist_var_dip_want_count
+				value = ist_modern_dip_want_count
+			}
+			if = {	#합병 제안서 발송
+				limit = {
+					var:ist_var_puppet_phase_3 >= 100
+					NOT = { has_variable = ist_var_puppet_phase_3_waiting }
+					NOT = { has_global_variable = ist_global_var_puppet_phase_3_waiting }
+					any_country = {
+						country_rank >= rank_value:major_power
+						#has_subject_relation_with = root	#이건 반대로 체크함
+						has_diplomatic_pact = {
+							who = root
+							type = puppet
+						}
+					}
+				}
+				set_variable = {
+					name = ist_var_puppet_phase_3_waiting
+					days = 32
+				}
+				set_global_variable = {
+					name = ist_global_var_puppet_phase_3_waiting
+					days = 62
+				}
+				save_scope_as = ist_scope_puppet_pup_country	#국가도 저장해두고
+				every_country = {
+					limit = {
+						country_rank >= rank_value:major_power
+						#has_subject_relation_with = root
+						has_diplomatic_pact = {
+							who = root
+							type = puppet
+						}
+					}
+					save_scope_as = ist_scope_puppet_master_country
+					trigger_event = {
+						id = ist_modern_events.340
+					}
+				}
+			}
+			
+			if = {
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					OR = {
+						is_subject = no
+						country_rank >= rank_value:major_power	#강대국 이상 등급으로 올라서면 탈출 시작!
+						NOT = { is_subject_type = subject_type_puppet }
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -10
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {	#예속화 진행도 증가 조건들
+		effect = {
+			if = {	#세계에 문명화 사명 기술 등장!
+				limit = {
+					has_global_variable = ist_global_var_civilizing_mission_invented
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.5
+				}
+			}
+			if = {	#종주국 악명에 따라
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						infamy >= 75
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#종주국 악명에 따라
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						infamy >= 125
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#난이도에 따라-내가 속국일때-super_easy
+				limit = {
+					has_game_rule = ist_limit_develop_rule_super_easy
+					is_player = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.25
+				}
+			}
+			if = {	#난이도에 따라-내가 속국일때-hard
+				limit = {
+					has_game_rule = ist_limit_develop_rule_hard
+
+					is_player = yes
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.25
+				}
+			}
+			if = {	#난이도에 따라-내가 종주국일때-super_easy
+				limit = {
+					has_game_rule = ist_limit_develop_rule_super_easy
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						is_player = yes
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.25
+				}
+			}
+			if = {	#난이도에 따라-내가 종주국일때-hard
+				limit = {
+					has_game_rule = ist_limit_develop_rule_hard
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						is_player = yes
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.25
+				}
+			}
+			if = {	#지배국과 같은 범전략지역에 위치한다면?????????
+				limit = {
+					OR = {
+						AND = {
+							ist_trigger_region_europe_west = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_europe_west = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_europe_east = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_europe_east = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_america_north = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_america_north = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_america_mid = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_america_mid = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_america_south = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_america_south = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_africa_north = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_africa_north = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_africa_west = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_africa_west = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_africa_east = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_africa_east = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_middle_east = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_middle_east = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_north = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_asia_north = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_india = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_asia_india = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_east = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_asia_east = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_china = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_asia_china = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_asia_south = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_asia_south = yes
+							}
+						}
+						AND = {
+							ist_trigger_region_oceania_oceania = yes
+							any_country = {
+								country_rank >= rank_value:major_power
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+								ist_trigger_region_oceania_oceania = yes
+							}
+						}
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.5
+				}
+			}
+			if = {	#지배국이 신분증명서 기술 연구!
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						has_technology_researched = identification_documents
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.50
+				}
+			}
+			if = {	#지배국이 라디오 기술 연구!
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						has_technology_researched = radio
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.5
+				}
+			}
+			if = {	#지배국이 전자동기관총 기술 연구!
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						has_technology_researched = automatic_machine_guns
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.5
+				}
+			}
+			if = {	#지배국이 비행선 기술 연구!
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						has_technology_researched = zeppelins
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.5
+				}
+			}
+			if = {	#지배국이 사회보장부 투자단계 3 이상이라면?
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						institution_investment_level = {
+							institution = institution_social_security
+							value >= 3
+						}
+					}
+				}
+				if = {	#사회보장부 5 단계 이상이라면?
+					limit = {
+						any_country = {
+							country_rank >= rank_value:major_power
+							OR = {
+								has_diplomatic_pact = {
+									who = root
+									type = protectorate
+								}
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+							}
+							institution_investment_level = {
+								institution = institution_social_security
+								value >= 5
+							}
+						}
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.25
+					}
+				}
+			}
+			if = {	#지배국이 직장안전부 투자단계 3 이상이라면?
+				limit = {
+					any_country = {
+						country_rank >= rank_value:major_power
+						OR = {
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						institution_investment_level = {
+							institution = institution_workplace_safety
+							value >= 3
+						}
+					}
+				}
+				if = {	#직장안전부 5 단계 이상이라면?
+					limit = {
+						any_country = {
+							country_rank >= rank_value:major_power
+							OR = {
+								has_diplomatic_pact = {
+									who = root
+									type = protectorate
+								}
+								has_diplomatic_pact = {
+									who = root
+									type = puppet
+								}
+							}
+							institution_investment_level = {
+								institution = institution_workplace_safety
+								value >= 5
+							}
+						}
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.25
+					}
+				}
+			}
+			if = {	#국가 채무가 한도의 50% 이상이라면?
+				limit = {
+					scaled_debt > 0.50
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.5
+				}
+			}
+			if = {	#예속화 기반 다지기 외교빨대가 하나 이상 박혀잇다면???
+				limit = {
+					ist_modern_dip_want_count >= 1
+				}
+				change_variable = {	#빨대당 1씩
+					name = ist_var_puppet_phase_3
+					add = ist_modern_dip_want_count
+				}
+			}
+			if = {	#자유무역법이 있다면?
+				limit = {
+					has_law = law_type:law_free_trade
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = 0.5
+				}
+			}
+			if = {	#공뭔 월급이 너무 적다면?
+				limit = {
+					government_wage_level < medium
+				}
+				if = {	#공뭔 월급이 최저라면?
+					limit = {
+						government_wage_level = very_low
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.25
+					}
+				}
+			}
+			if = {	#군인 월급이 너무 적다면?
+				limit = {
+					military_wage_level < medium
+				}
+				if = {	#군인 월급이 최저라면?
+					limit = {
+						military_wage_level = very_low
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.25
+					}
+				}
+			}
+			if = {	#지도자 인기가 -25 이하라면?
+				limit = {
+					ruler.popularity <= -25
+				}
+				if = {	#지도자 인기가 -50 이하라면?
+					limit = {
+						ruler.popularity <= -50
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = 0.25
+					}
+				}
+			}
+			####이밑으론 예속화 진행도 감속 조건들
+			if = {	#세계에 문명화 사명 기술 미등장
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					NOT = { has_global_variable = ist_global_var_civilizing_mission_invented }
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#피지배국이 범민족주의 기술 연구!
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					has_technology_researched = pan-nationalism
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#피지배국이 무정부주의 기술 연구!
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					has_technology_researched = anarchism
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#피지배국이 사회주의 기술 연구!
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					has_technology_researched = socialism
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#현금보유고가 최대효율 한도를 넘어서까지 쌓여가고있다면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					gold_reserves > gold_reserves_limit
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#자문화중심주의 or 민족국가법이 있다면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					OR = {
+						has_law = law_type:law_national_supremacy
+						has_law = law_type:law_ethnostate
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#고립주의법이 있다면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					has_law = law_type:law_isolationism
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#공뭔 월급이 너무 많다면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					government_wage_level > medium
+				}
+				if = {	#공뭔 월급이 최대라면?
+					limit = {
+						government_wage_level = very_high
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = -0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = -0.25
+					}
+				}
+			}
+			if = {	#군인 월급이 너무 많다면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					military_wage_level > medium
+				}
+				if = {	#군인 월급이 최저라면?
+					limit = {
+						military_wage_level = very_high
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = -0.5
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = -0.25
+					}
+				}
+			}
+			if = {	#지도자 인기가 25 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					ruler.popularity >= 25
+				}
+				if = {	#지도자 인기가 50 이상이라면?
+					limit = {
+						ruler.popularity >= 50
+					}
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = -0.50
+					}
+				}
+				else = {
+					change_variable = {
+						name = ist_var_puppet_phase_3
+						add = -0.25
+					}
+				}
+			}
+			if = {	#인구가 2500만 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					total_population >= 25000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#인구가 5000만 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					total_population >= 50000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#인구가 1억 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					total_population >= 100000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#GDP가 5000만 이상이라면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					THIS.GDP >= 50000000
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -0.5
+				}
+			}
+			if = {	#내 지배국도 열강 따까리라면?
+				limit = {
+					var:ist_var_puppet_phase_3 >= 0
+					any_country = {
+						OR = {
+							country_rank < rank_value:major_power
+							has_diplomatic_pact = {
+								who = root
+								type = protectorate
+							}
+							has_diplomatic_pact = {
+								who = root
+								type = puppet
+							}
+						}
+						is_subject = yes
+						NOT = { is_subject_of = ROOT }
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_phase_3
+					add = -1.0
+				}
+			}
+		}
+	}
+
+	current_value = {
+		#value = ist_modern_puppet_phase_3
+		value = var:ist_var_puppet_phase_3
+	}
+
+	goal_add_value = {
+		value = 100
+	}
+
+	progressbar = yes
+
+	weight = 50
+
+	should_be_pinned_by_default = yes
+}
+#####
+
+je_ist_electric_intel = {
+	icon = "gfx/interface/icons/goods_icons/telephones.dds"
+	group = je_group_historical_content
+	#is_shown_when_inactive = {
+	#}
+	
+    #possible = {
+	#}
+
+	immediate = {
+		set_variable = {
+			name = ist_var_electric_intel_level
+			value = 0
+		}
+	}
+
+	complete = {
+		always = no
+	}
+
+	#on_complete = {
+	#}
+
+	#fail = {
+	#}
+
+	#on_fail = {
+	#}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_ist_electric_intel_lvl_verylow
+				trigger = {
+					root.var:ist_var_electric_intel_level >= 0
+					root.var:ist_var_electric_intel_level < 40
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_electric_intel_lvl_low
+				trigger = {
+					root.var:ist_var_electric_intel_level >= 40
+					root.var:ist_var_electric_intel_level < 80
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_electric_intel_lvl_medium
+				trigger = {
+					root.var:ist_var_electric_intel_level >= 80
+					root.var:ist_var_electric_intel_level < 120
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_electric_intel_lvl_high
+				trigger = {
+					root.var:ist_var_electric_intel_level >= 120
+					root.var:ist_var_electric_intel_level < 160
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_electric_intel_lvl_veryhigh
+				trigger = {
+					root.var:ist_var_electric_intel_level >= 160
+					root.var:ist_var_electric_intel_level < 200
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_electric_intel_lvl_max
+				trigger = {
+					root.var:ist_var_electric_intel_level >= 200
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			#add_modifier = {
+			#	name = ist_modi_intel_level_passive
+			#	multiplier = root.var:ist_var_electric_intel_level
+			#	months = 1
+			#}
+			if = {	#최대 캡 설정
+				limit = {
+					var:ist_var_electric_intel_level >= 200
+				}
+				set_variable = {
+					name = ist_var_electric_intel_level
+					value = 200
+				}
+			}
+			if = {	#계약 많으면 증가량 조정
+				limit = {
+					ist_modern_dip_electric_count >= 3
+				}
+				change_variable = {
+					name = ist_var_electric_intel_level
+					add = -0.25
+				}
+			}
+			if = {	#계약 많으면 증가량 조정
+				limit = {
+					ist_modern_dip_electric_count >= 5
+				}
+				change_variable = {
+					name = ist_var_electric_intel_level
+					add = -0.25
+				}
+			}
+			if = {	#계약 많으면 증가량 조정
+				limit = {
+					ist_modern_dip_electric_count >= 7
+				}
+				change_variable = {
+					name = ist_var_electric_intel_level
+					add = -0.25
+				}
+			}
+			if = {	#계약 많으면 증가량 조정
+				limit = {
+					ist_modern_dip_electric_count >= 9
+				}
+				change_variable = {
+					name = ist_var_electric_intel_level
+					add = -0.25
+				}
+			}
+		}
+	}
+
+	current_value = {
+		value = var:ist_var_electric_intel_level
+	}
+
+	goal_add_value = {
+		value = 200
+	}
+
+	progressbar = yes
+
+	weight = 50
+
+	should_be_pinned_by_default = yes
+}
+
+je_ist_railway_count = {
+	icon = "gfx/interface/icons/goods_icons/locomotives.dds"
+	group = je_group_historical_content
+	#is_shown_when_inactive = {
+	#}
+	
+    #possible = {
+	#}
+
+	immediate = {
+		set_variable = {
+			name = ist_var_rail_share_lvl
+			value = 0
+		}
+	}
+
+	complete = {
+		always = no
+	}
+
+	#on_complete = {
+	#}
+
+	#fail = {
+	#}
+
+	#on_fail = {
+	#}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_ist_railway_count_lvl_verylow
+				trigger = {
+					root.var:ist_var_rail_share_lvl >= 1
+					root.var:ist_var_rail_share_lvl < 3
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_railway_count_lvl_low
+				trigger = {
+					root.var:ist_var_rail_share_lvl >= 3
+					root.var:ist_var_rail_share_lvl < 5
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_railway_count_lvl_medium
+				trigger = {
+					root.var:ist_var_rail_share_lvl >= 5
+					root.var:ist_var_rail_share_lvl < 7
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_railway_count_lvl_high
+				trigger = {
+					root.var:ist_var_rail_share_lvl >= 7
+					root.var:ist_var_rail_share_lvl < 9
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_railway_count_lvl_veryhigh
+				trigger = {
+					root.var:ist_var_rail_share_lvl >= 9
+				}
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 0
+					ist_modern_dip_railway_count < 3
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 1
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 3
+					ist_modern_dip_railway_count < 6
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 2
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 6
+					ist_modern_dip_railway_count < 9
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 3
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 9
+					ist_modern_dip_railway_count < 12
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 4
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 12
+					ist_modern_dip_railway_count < 15
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 5
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 15
+					ist_modern_dip_railway_count < 18
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 6
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 18
+					ist_modern_dip_railway_count < 21
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 7
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 21
+					ist_modern_dip_railway_count < 24
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 8
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 24
+					ist_modern_dip_railway_count < 27
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 9
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_dip_railway_count >= 27
+				}
+				set_variable = {
+					name = ist_var_rail_share_lvl
+					value = 10
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			add_modifier = {
+				name = ist_modern_railway_toomany
+				multiplier = root.var:ist_var_rail_share_lvl
+				months = 1
+			}
+		}
+	}
+
+	current_value = {
+		value = ist_modern_dip_railway_count
+	}
+
+	goal_add_value = {
+		value = 30
+	}
+
+	progressbar = yes
+
+	weight = 100
+
+	should_be_pinned_by_default = yes
+}
+
+je_ist_treaty_port_count = {
+	icon = "gfx/interface/icons/goods_icons/steamers.dds"
+	group = je_group_historical_content
+	#is_shown_when_inactive = {
+	#	always = yes
+	#}
+	
+    #possible = {
+	#	any_scope_state = {
+	#		is_treaty_port = yes
+	#	}
+	#}
+
+	immediate = {
+		set_variable = {
+			name = ist_var_treaty_port_share_lvl
+			value = 0
+		}
+		set_variable = {
+			name = ist_modern_treaty_port_quality_count_progress
+			value = 0
+		}
+	}
+
+	complete = {
+		always = no
+	}
+
+	#on_complete = {
+	#}
+
+	#fail = {
+	#}
+
+	#on_fail = {
+	#}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_ist_treaty_port_count_lvl_verylow
+				trigger = {
+					root.var:ist_var_treaty_port_share_lvl >= 1
+					root.var:ist_var_treaty_port_share_lvl < 3
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_treaty_port_count_lvl_low
+				trigger = {
+					root.var:ist_var_treaty_port_share_lvl >= 3
+					root.var:ist_var_treaty_port_share_lvl < 5
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_treaty_port_count_lvl_medium
+				trigger = {
+					root.var:ist_var_treaty_port_share_lvl >= 5
+					root.var:ist_var_treaty_port_share_lvl < 7
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_treaty_port_count_lvl_high
+				trigger = {
+					root.var:ist_var_treaty_port_share_lvl >= 7
+					root.var:ist_var_treaty_port_share_lvl < 9
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_treaty_port_count_lvl_veryhigh
+				trigger = {
+					root.var:ist_var_treaty_port_share_lvl >= 9
+				}
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = ist_modern_treaty_port_quality_count_progress
+				value = ist_modern_treaty_port_quality_count
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 1
+					ist_modern_treaty_port_quality_count < 3
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 1
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 3
+					ist_modern_treaty_port_quality_count < 5
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 2
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 5
+					ist_modern_treaty_port_quality_count < 7
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 3
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 7
+					ist_modern_treaty_port_quality_count < 9
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 4
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 9
+					ist_modern_treaty_port_quality_count < 11
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 5
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 11
+					ist_modern_treaty_port_quality_count < 13
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 6
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 13
+					ist_modern_treaty_port_quality_count < 15
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 7
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 15
+					ist_modern_treaty_port_quality_count < 17
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 8
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 17
+					ist_modern_treaty_port_quality_count < 19
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 9
+				}
+			}
+			if = {
+				limit = {
+					ist_modern_treaty_port_quality_count >= 19
+				}
+				set_variable = {
+					name = ist_var_treaty_port_share_lvl
+					value = 10
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			add_modifier = {
+				name = ist_modern_treaty_port_toomany
+				multiplier = root.var:ist_var_treaty_port_share_lvl
+				months = 1
+			}
+		}
+	}
+
+	current_value = {
+		value = var:ist_modern_treaty_port_quality_count_progress
+	}
+
+	goal_add_value = {
+		value = 20
+	}
+
+	progressbar = yes
+
+	weight = 50
+
+	should_be_pinned_by_default = yes
+}
+
+####아래는 아직 개발중인 미래계획
+
+##제국주의 3타입별 업그레이드 저널
+##러시아,오스트리아 철도 관련 저널
+##미국,러시아,일본,프로이센 등등 전용 영향권 저널
+je_ist_mother_russia = {
+	#Матушка Россия
+	icon = "gfx/interface/icons/war_goals/force_recognition.dds"
+    group = je_group_historical_content
+	is_shown_when_inactive = {
+		country_has_primary_culture = cu:russian
+	}
+	
+	possible = {
+		country_rank = rank_value:great_power
+	}
+	
+	#immediate = {
+	#}
+	
+	complete = {
+		always = no
+		owns_entire_state_region = STATE_MOSCOW
+		owns_entire_state_region = STATE_MINSK
+		owns_entire_state_region = STATE_KIEV
+	}
+
+	#on_complete = {
+	#}
+
+	on_yearly_pulse = {
+		effect = {
+			##각 목표마다
+			if = {
+				limit = {
+					owns_entire_state_region = STATE_MOSCOW
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = 6
+				}
+			}
+			if = {
+				limit = {
+					owns_entire_state_region = STATE_KIEV
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = 6
+				}
+			}
+			if = {
+				limit = {
+					owns_entire_state_region = STATE_MINSK
+				}
+				change_variable = {
+					name = ist_var_puppet_point_europe_east
+					add = 6
+				}
+			}
+		}
+	}
+
+	should_be_pinned_by_default = yes
+}
+
+je_ist_monroe_doctrine = {
+	#먼로 독트린 - 미국
+	icon = "gfx/interface/icons/war_goals/force_recognition.dds"
+    group = je_group_historical_content
+	is_shown_when_inactive = {
+		OR = {
+			country_has_primary_culture = cu:yankee
+			country_has_primary_culture = cu:dixie
+		}
+	}
+	
+	possible = {
+		country_rank = rank_value:great_power
+		ist_trigger_region_america_north = yes
+	}
+	
+	#immediate = {
+	#}
+	
+	complete = {
+		custom_tooltip = {
+			text = je_ist_monroe_doctrine_complete
+			root.var:ist_var_puppet_point_america_north >= 300
+		}
+	}
+
+	on_complete = {
+		custom_tooltip = {
+			text = je_ist_monroe_doctrine_on_complete
+		}
+		change_variable = {
+			name = ist_var_puppet_point_america_mid
+			add = 100
+		}
+		change_variable = {
+			name = ist_var_puppet_point_america_south
+			add = 100
+		}
+	}
+	
+	fail = {
+		year >= 1861
+	}
+	
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_ist_monroe_doctrine_status_1
+				trigger = {
+					root.var:ist_var_puppet_point_america_north < 100
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_monroe_doctrine_status_2
+				trigger = {
+					root.var:ist_var_puppet_point_america_north >= 100
+					root.var:ist_var_puppet_point_america_north < 200
+				}
+			}
+			triggered_desc = {
+				desc = je_ist_monroe_doctrine_status_3
+				trigger = {
+					root.var:ist_var_puppet_point_america_north >= 200
+				}
+			}
+		}
+	}
+
+	on_yearly_pulse = {
+		effect = {
+			change_variable = {
+				name = ist_var_puppet_point_america_north
+				add = 6
+			}
+			change_variable = {
+				name = ist_var_puppet_point_europe_east
+				add = -6
+			}
+			change_variable = {
+				name = ist_var_puppet_point_europe_west
+				add = -6
+			}
+			every_country = {
+				limit = {
+					NOT = { this = root }
+					has_journal_entry = je_ist_puppet_point
+					OR = {
+						ist_trigger_region_europe_west = yes
+						ist_trigger_region_europe_east = yes
+					}
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_mid
+					add = -4
+				}
+				change_variable = {
+					name = ist_var_puppet_point_america_south
+					add = -4
+				}
+			}
+		}
+	}
+
+	should_be_pinned_by_default = yes
+}
+
+je_ist_japan_asia = {
+	#아시아주의 - 일본
+	icon = "gfx/interface/icons/war_goals/force_recognition.dds"
+    group = je_group_historical_content
+	is_shown_when_inactive = {
+		#country_has_primary_culture = cu:japanese
+		exists = c:JAP
+		exists = c:KOR
+		this = c:JAP
+	}
+	
+	possible = {
+		has_global_variable = meiji_restoration_complete
+		#always = yes
+		#country_rank = rank_value:great_power
+	}
+	
+	#immediate = {
+	#}
+	
+	complete = {
+		custom_tooltip = {
+			text = je_ist_japan_asia_complete
+			OR = {
+				NOT = { exists = c:CHI }
+				has_diplomatic_pact = {
+					who = c:CHI
+					type = humiliation
+				}
+			}
+		}
+		exists = c:KOR
+		c:KOR = {
+			is_subject = no
+		}
+	}
+
+	on_complete = {
+		custom_tooltip = {
+			text = je_ist_japan_asia_on_complete
+		}
+		c:KOR = { set_owes_obligation_to = { country = root setting = yes } }
+		add_modifier = {
+			name = ist_modern_je_japan_asia_clear
+			months = 120
+		}
+		set_variable = ist_var_je_japan_asia_clear
+	}
+	
+	fail = {
+		OR = {
+			NOT = { exists = c:KOR }
+			c:KOR = {
+				is_subject_of = ROOT
+			}
+			any_scope_state = {	#트리거 오류 추정됨, 추후 확인바람.
+				is_homeland = cu:korean
+			}
+		}
+	}
+
+	should_be_pinned_by_default = yes
+}
+
+#등등
+
+je_ist_unrec_dip_evil_0 = {
+	icon = "gfx/interface/icons/law_icons/law_unrec_dip_evil.dds"
+
+	#is_shown_when_inactive = {
+	#}
+	
+    #possible = {
+	#}
+
+	immediate = {
+		set_variable = {
+			name = ist_var_je_unrec_dip_evil_0_progress
+			value = 0
+		}
+		random_law = {
+			limit = { type = law_type:law_monarchy }
+			save_scope_as = monarchy_scope
+		}
+	}
+
+	complete = {
+		country_rank >= rank_value:great_power
+		custom_tooltip = {
+			text = je_divided_monarchists_02_tt
+			has_variable = one_true_french_dynasty
+		}
+	}
+
+	on_complete = {
+		#add_journal_entry = {
+		#	type = je_ist_unrec_dip_evil_1
+		#}
+	}
+
+	fail = {
+		NOT = { has_law = law_type:law_unrec_dip_evil }
+	}
+
+	#on_fail = {
+	#	#진행바
+	#	remove_variable = ist_var_je_unrec_dip_evil_0_progress
+	#	#스킬
+	#	remove_variable = ist_var_je_unrec_dip_evil_0_progress
+	#	remove_variable = ist_var_je_unrec_dip_evil_0_progress
+	#}
+
+	#scripted_button = 외교퍽 1번
+	#scripted_button = 외교퍽 2번
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = { # Chosen dynasty is cementing its rule
+				desc = status_fra_dynasty_cementing
+				trigger = {
+					OR = {
+						AND = {
+							has_variable = supporting_bonapartist_var
+							has_variable = bonapartist_restoration_var
+						}
+						AND = {
+							has_variable = supporting_legitimist_var
+							has_variable = legitimist_restoration_var
+						}
+						AND = {
+							has_variable = supporting_orleanist_var
+							has_variable = orleanist_restoration_var
+						}
+					}
+				}
+			}
+			triggered_desc = { # Supporting Orleans in government
+				desc = status_orleans_fra
+				trigger = {
+					has_variable = supporting_orleanist_var
+					NOT = {
+						has_variable = orleanist_restoration_var
+					}
+				}
+			}
+			triggered_desc = { # Supporting Legitimist in government
+				desc = status_legitimate_fra
+				trigger = {
+					has_variable = supporting_legitimist_var
+					NOT = {
+						has_variable = legitimist_restoration_var
+					}
+				}
+			}
+			triggered_desc = { # Supporting Bonapartist in government
+				desc = status_bonaparte_fra
+				trigger = {
+					has_variable = supporting_bonapartist_var
+					NOT = {
+						has_variable = bonapartist_restoration_var
+					}
+				}
+			}
+			triggered_desc = { # Bar not moving, either no supported or not in government
+				desc = status_fra_no_dynasty
+				trigger = {
+					always = yes
+				}
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		events = {
+			french_pretenders.5
+		}
+		effect = {
+			if = {
+				limit = {
+					root.var:french_monarchist_progress_var < 60
+					has_journal_entry = je_cement_the_rightful_dynasty
+					OR = {
+						AND = {
+							has_variable = orleanist_restoration_var
+							trigger_if = {
+								limit = {
+									is_player = yes
+								}
+								has_variable = supporting_orleanist_var
+							}
+						}
+						AND = {
+							has_variable = legitimist_restoration_var
+							trigger_if = {
+								limit = {
+									is_player = yes
+								}
+								has_variable = supporting_legitimist_var
+							}
+						}
+						AND = {
+							has_variable = bonapartist_restoration_var
+							trigger_if = {
+								limit = {
+									is_player = yes
+								}
+								has_variable = supporting_bonapartist_var
+							}
+						}
+					}
+				}
+				set_variable = { name = french_monarchist_progress_var value = 60 }
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_variable = {
+				name = ist_var_je_unrec_dip_evil_0_progress
+				add = 2
+			}
+		}
+		random_events = {
+			50 = 0
+			10 = french_pretenders_pulse.2
+			10 = french_pretenders_pulse.3
+		}
+	}
+
+	current_value = {
+		value = root.var:ist_var_je_unrec_dip_evil_0_progress
+	}
+
+	goal_add_value = {
+		value = 300
+	}
+
+	progressbar = yes
+
+	weight = 100
+
+	should_be_pinned_by_default = yes
+}
+
+je_ist_unrec_dip_norm_0 = {
+	icon = "gfx/interface/icons/law_icons/law_unrec_dip_evil.dds"
+
+	#is_shown_when_inactive = {
+	#}
+	
+    #possible = {
+	#}
+
+	immediate = {
+		set_variable = {
+			name = ist_var_je_unrec_dip_evil_0_progress
+			value = 0
+		}
+		random_law = {
+			limit = { type = law_type:law_monarchy }
+			save_scope_as = monarchy_scope
+		}
+	}
+
+	complete = {
+		country_rank >= rank_value:great_power
+		custom_tooltip = {
+			text = je_divided_monarchists_02_tt
+			has_variable = one_true_french_dynasty
+		}
+	}
+
+	on_complete = {
+		#add_journal_entry = {
+		#	type = je_ist_unrec_dip_evil_1
+		#}
+	}
+
+	fail = {
+		NOT = { has_law = law_type:law_unrec_dip_evil }
+	}
+
+	#on_fail = {
+	#	#진행바
+	#	remove_variable = ist_var_je_unrec_dip_evil_0_progress
+	#	#스킬
+	#	remove_variable = ist_var_je_unrec_dip_evil_0_progress
+	#	remove_variable = ist_var_je_unrec_dip_evil_0_progress
+	#}
+
+	#scripted_button = 외교퍽 1번
+	#scripted_button = 외교퍽 2번
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = { # Chosen dynasty is cementing its rule
+				desc = status_fra_dynasty_cementing
+				trigger = {
+					OR = {
+						AND = {
+							has_variable = supporting_bonapartist_var
+							has_variable = bonapartist_restoration_var
+						}
+						AND = {
+							has_variable = supporting_legitimist_var
+							has_variable = legitimist_restoration_var
+						}
+						AND = {
+							has_variable = supporting_orleanist_var
+							has_variable = orleanist_restoration_var
+						}
+					}
+				}
+			}
+			triggered_desc = { # Supporting Orleans in government
+				desc = status_orleans_fra
+				trigger = {
+					has_variable = supporting_orleanist_var
+					NOT = {
+						has_variable = orleanist_restoration_var
+					}
+				}
+			}
+			triggered_desc = { # Supporting Legitimist in government
+				desc = status_legitimate_fra
+				trigger = {
+					has_variable = supporting_legitimist_var
+					NOT = {
+						has_variable = legitimist_restoration_var
+					}
+				}
+			}
+			triggered_desc = { # Supporting Bonapartist in government
+				desc = status_bonaparte_fra
+				trigger = {
+					has_variable = supporting_bonapartist_var
+					NOT = {
+						has_variable = bonapartist_restoration_var
+					}
+				}
+			}
+			triggered_desc = { # Bar not moving, either no supported or not in government
+				desc = status_fra_no_dynasty
+				trigger = {
+					always = yes
+				}
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		events = {
+			french_pretenders.5
+		}
+		effect = {
+			if = {
+				limit = {
+					root.var:french_monarchist_progress_var < 60
+					has_journal_entry = je_cement_the_rightful_dynasty
+					OR = {
+						AND = {
+							has_variable = orleanist_restoration_var
+							trigger_if = {
+								limit = {
+									is_player = yes
+								}
+								has_variable = supporting_orleanist_var
+							}
+						}
+						AND = {
+							has_variable = legitimist_restoration_var
+							trigger_if = {
+								limit = {
+									is_player = yes
+								}
+								has_variable = supporting_legitimist_var
+							}
+						}
+						AND = {
+							has_variable = bonapartist_restoration_var
+							trigger_if = {
+								limit = {
+									is_player = yes
+								}
+								has_variable = supporting_bonapartist_var
+							}
+						}
+					}
+				}
+				set_variable = { name = french_monarchist_progress_var value = 60 }
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_variable = {
+				name = ist_var_je_unrec_dip_evil_0_progress
+				add = 2
+			}
+		}
+		random_events = {
+			50 = 0
+			10 = french_pretenders_pulse.2
+			10 = french_pretenders_pulse.3
+		}
+	}
+
+	current_value = {
+		value = root.var:ist_var_je_unrec_dip_evil_0_progress
+	}
+
+	goal_add_value = {
+		value = 300
+	}
+
+	progressbar = yes
+
+	weight = 100
+
+	should_be_pinned_by_default = yes
+}
+
+je_ist_unrec_dip_good_0 = {
+	icon = "gfx/interface/icons/law_icons/law_unrec_dip_evil.dds"
+
+	#is_shown_when_inactive = {
+	#}
+	
+    #possible = {
+	#}
+
+	immediate = {
+		set_variable = {
+			name = ist_var_je_unrec_dip_evil_0_progress
+			value = 0
+		}
+		random_law = {
+			limit = { type = law_type:law_monarchy }
+			save_scope_as = monarchy_scope
+		}
+	}
+
+	complete = {
+		country_rank >= rank_value:great_power
+		custom_tooltip = {
+			text = je_divided_monarchists_02_tt
+			has_variable = one_true_french_dynasty
+		}
+	}
+
+	on_complete = {
+		#add_journal_entry = {
+		#	type = je_ist_unrec_dip_evil_1
+		#}
+	}
+
+	fail = {
+		NOT = { has_law = law_type:law_unrec_dip_evil }
+	}
+
+	#on_fail = {
+	#	#진행바
+	#	remove_variable = ist_var_je_unrec_dip_evil_0_progress
+	#	#스킬
+	#	remove_variable = ist_var_je_unrec_dip_evil_0_progress
+	#	remove_variable = ist_var_je_unrec_dip_evil_0_progress
+	#}
+
+	#scripted_button = 외교퍽 1번
+	#scripted_button = 외교퍽 2번
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = { # Chosen dynasty is cementing its rule
+				desc = status_fra_dynasty_cementing
+				trigger = {
+					OR = {
+						AND = {
+							has_variable = supporting_bonapartist_var
+							has_variable = bonapartist_restoration_var
+						}
+						AND = {
+							has_variable = supporting_legitimist_var
+							has_variable = legitimist_restoration_var
+						}
+						AND = {
+							has_variable = supporting_orleanist_var
+							has_variable = orleanist_restoration_var
+						}
+					}
+				}
+			}
+			triggered_desc = { # Supporting Orleans in government
+				desc = status_orleans_fra
+				trigger = {
+					has_variable = supporting_orleanist_var
+					NOT = {
+						has_variable = orleanist_restoration_var
+					}
+				}
+			}
+			triggered_desc = { # Supporting Legitimist in government
+				desc = status_legitimate_fra
+				trigger = {
+					has_variable = supporting_legitimist_var
+					NOT = {
+						has_variable = legitimist_restoration_var
+					}
+				}
+			}
+			triggered_desc = { # Supporting Bonapartist in government
+				desc = status_bonaparte_fra
+				trigger = {
+					has_variable = supporting_bonapartist_var
+					NOT = {
+						has_variable = bonapartist_restoration_var
+					}
+				}
+			}
+			triggered_desc = { # Bar not moving, either no supported or not in government
+				desc = status_fra_no_dynasty
+				trigger = {
+					always = yes
+				}
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		events = {
+			french_pretenders.5
+		}
+		effect = {
+			if = {
+				limit = {
+					root.var:french_monarchist_progress_var < 60
+					has_journal_entry = je_cement_the_rightful_dynasty
+					OR = {
+						AND = {
+							has_variable = orleanist_restoration_var
+							trigger_if = {
+								limit = {
+									is_player = yes
+								}
+								has_variable = supporting_orleanist_var
+							}
+						}
+						AND = {
+							has_variable = legitimist_restoration_var
+							trigger_if = {
+								limit = {
+									is_player = yes
+								}
+								has_variable = supporting_legitimist_var
+							}
+						}
+						AND = {
+							has_variable = bonapartist_restoration_var
+							trigger_if = {
+								limit = {
+									is_player = yes
+								}
+								has_variable = supporting_bonapartist_var
+							}
+						}
+					}
+				}
+				set_variable = { name = french_monarchist_progress_var value = 60 }
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_variable = {
+				name = ist_var_je_unrec_dip_evil_0_progress
+				add = 2
+			}
+		}
+		random_events = {
+			50 = 0
+			10 = french_pretenders_pulse.2
+			10 = french_pretenders_pulse.3
+		}
+	}
+
+	current_value = {
+		value = root.var:ist_var_je_unrec_dip_evil_0_progress
+	}
+
+	goal_add_value = {
+		value = 300
+	}
+
+	progressbar = yes
+
+	weight = 100
+
+	should_be_pinned_by_default = yes
+}
