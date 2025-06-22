@@ -1,0 +1,1007 @@
+﻿#모디파이어 입니다~
+ist_modern_debug_test_modifier = {	#테스팅용 모디파이어
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_prestige_add = 1000
+}
+
+ist_modern_difficulty_super_easy = {	#슈퍼겁쟁이 쉼터
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_infamy_generation_mult = -0.20
+}
+#일반난이도 정복지 건설섹터,대학 디버프
+ist_modern_diff_building_cons = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	building_construction_sector_throughput_mult = -1.00
+}
+ist_modern_diff_building_univ = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	building_university_throughput_mult = -1.00
+}
+ist_modern_diff_building_admn = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	building_government_administration_throughput_mult = -1.00
+}
+
+ist_modern_plz_protect_me = {	#자발적인 굴종
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	country_prestige_mult = -0.01
+}
+
+ist_modern_great_power_nova = {	#열강의 탄생
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_prestige_mult = 0.10
+}
+
+ist_modern_je_japan_asia_clear = {	#japan
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_prestige_add = 100
+}
+###첩보관련
+#무역협정
+ist_modern_trade_intel_up = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_trade_route_competitiveness_mult = 0.25
+}
+ist_modern_trade_intel_down = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_trade_route_competitiveness_mult = -0.25
+	country_trade_route_cost_mult = 0.25
+}
+#군납비리
+ist_modern_supply_intel_up = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_military_goods_cost_mult = -0.05
+}
+ist_modern_supply_intel_down = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_military_goods_cost_mult = 0.10
+}
+#작계유출
+ist_modern_plan_intel_up = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+    unit_army_offense_mult = 0.05
+	unit_supply_consumption_mult = -0.10
+	unit_provinces_captured_mult = 0.10
+}
+ist_modern_plan_intel_down = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+    unit_army_defense_mult = -0.10
+}
+#불만선동
+ist_modern_radical_intel_up = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_influence_add = 100
+	country_diplomatic_play_maneuvers_add = 5
+}
+ist_modern_radical_intel_down = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_opposition_ig_approval_add = -2
+	state_radicals_from_discrimination_mult = 0.20
+	country_radicals_from_conquest_mult = 0.20
+}
+##영향력 사보타주
+#ist_modern_influ_intel_up = {
+#	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+#	country_trade_route_competitiveness_mult = 0.20
+#}
+#ist_modern_influ_intel_down = {
+#	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+#	country_trade_route_competitiveness_mult = -0.20
+#	country_trade_route_cost_mult = 0.20
+#}
+##예속화 앞당기기
+#ist_modern_sub_intel_up = {
+#	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+#	country_trade_route_competitiveness_mult = 0.20
+#}
+#ist_modern_sub_intel_down = {
+#	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+#	country_trade_route_competitiveness_mult = -0.20
+#	country_trade_route_cost_mult = 0.20
+#}
+
+#AI 법 제정
+ist_modern_ai_law_help = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_law_enactment_success_add = 0.50
+	country_law_enactment_time_mult = -0.50
+}
+
+ist_modern_electric_cost = {	#외국계 전기회사 운영됨
+	icon = gfx/interface/icons/production_method_icons/power_plant.dds
+	building_power_plant_throughput_mult = 0.10	#전기 효율 증가
+	country_bureaucracy_mult = 0.05
+	state_tax_capacity_mult = 0.05
+}
+ist_modern_electric_break = {	#전력망 재조정
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_negative.dds
+	building_power_plant_throughput_mult = -0.20	#전력 효율 감소
+}
+
+ist_modern_obli_railway = {	#특약으로 철도부설권 딸때 바로 못끊게
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	country_prestige_mult = -0.01
+}
+ist_modern_obli_electric = {	#특약으로 전기전선권 딸때 바로 못끊게
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	country_prestige_mult = -0.01
+}
+ist_modern_obli_gib_mony_up = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_tax_collection_mult = -0.05
+	state_construction_mult = -0.05
+}
+ist_modern_obli_gib_mony_down = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	state_construction_mult = 0.10
+	state_tax_capacity_mult = 0.10
+	country_construction_add = 10
+	country_loan_interest_rate_mult = -0.10
+}
+ist_modern_obli_gib_bok_up = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_negative.dds
+	country_society_weekly_innovation_mult = -0.10
+	country_military_weekly_innovation_mult = -0.10
+	country_production_weekly_innovation_mult = -0.10
+}
+ist_modern_obli_gib_bok_down = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	country_production_tech_spread_mult = 0.25
+	country_military_tech_spread_mult = 0.25
+	country_society_tech_spread_mult = 0.25
+}
+
+ist_modern_obli_recog_gov_enemy = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	country_legitimacy_base_add = -10
+	interest_group_in_government_approval_add = -1
+}
+ist_modern_obli_recog_gov_me = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_legitimacy_base_add = 10
+	country_law_enactment_time_mult = -0.10
+	country_law_enactment_success_add = 0.05
+}
+ist_modern_obli_support_his_enemy = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	state_radicals_from_sol_change_accepted_culture_mult = 0.10
+	country_prestige_mult = -0.05
+}
+ist_modern_obli_support_his_lose = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_statue_negative.dds
+	character_popularity_add = -50
+}
+ist_modern_obli_support_his_me = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	state_radicals_from_sol_change_accepted_culture_mult = -0.05
+	state_loyalists_from_sol_change_accepted_culture_mult = 0.05
+	country_prestige_add = 50
+}
+ist_modern_obli_support_his_win = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_prestige_add = 50
+}
+
+
+ist_modern_railway_cost = {	#외국계 철도회사 운영됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_railway_throughput_mult = 0.25	#철도 효율 증가. 
+	unit_defense_add = -5	#군대 방어 약화
+}
+ist_modern_railway_cost_gbr = {	#논영
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_railway_throughput_mult = 0.25	#철도 효율 증가. 
+	building_coal_mine_throughput_mult = 0.05
+	unit_defense_add = -5	#군대 방어 약화
+}
+ist_modern_railway_cost_fra = {	#엘랑
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_railway_throughput_mult = 0.25	#철도 효율 증가. 
+	state_construction_mult = 0.05
+	unit_defense_add = -5	#군대 방어 약화
+}
+ist_modern_railway_cost_pru = {	#프센징
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_railway_throughput_mult = 0.25	#철도 효율 증가. 
+	building_steel_mills_throughput_mult = 0.05
+	unit_defense_add = -5	#군대 방어 약화
+}
+ist_modern_railway_cost_aus = {	#합스
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_railway_throughput_mult = 0.25	#철도 효율 증가. 
+	country_society_tech_cost_mult = -0.05
+	unit_defense_add = -5	#군대 방어 약화
+}
+ist_modern_railway_cost_ger = {	#독일
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_railway_throughput_mult = 0.25	#철도 효율 증가. 
+	building_steel_mills_throughput_mult = 0.05
+	building_chemical_plants_throughput_mult = 0.05
+	unit_defense_add = -5	#군대 방어 약화
+}
+ist_modern_railway_cost_rus = {	#루씨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_railway_throughput_mult = 0.25	#철도 효율 증가. 
+	state_conscription_rate_add = 0.02
+	country_military_goods_cost_mult = -0.05
+	building_logging_camp_throughput_mult = 0.05
+	unit_defense_add = -5	#군대 방어 약화
+}
+ist_modern_railway_cost_tur = {	#케
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_railway_throughput_mult = 0.25	#철도 효율 증가. 
+	building_group_bg_plantations_throughput_mult = 0.10
+	#building_coffee_plantation_throughput_mult = 0.05
+	#building_tea_plantation_throughput_mult = 0.05
+	#building_opium_plantation_throughput_mult = 0.05	
+	unit_defense_add = -5	#군대 방어 약화
+}
+ist_modern_railway_cost_usa = {	#미
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_railway_throughput_mult = 0.25	#철도 효율 증가. 
+	state_infrastructure_add = 5
+	state_migration_pull_mult = 0.05
+	unit_defense_add = -5	#군대 방어 약화
+}
+
+ist_modern_treaty_port_toomany = {
+	icon = gfx/interface/icons/goods_icons/steamers.dds
+	unit_supply_consumption_mult = -0.02
+	country_trade_route_competitiveness_mult = 0.02
+	country_prestige_add = 20
+	building_group_bg_ist_exploit_group_throughput_mult = 0.25
+}
+
+ist_modern_railway_profit1 = {	#철도운영이익
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	building_motor_industry_throughput_mult = -0.05	#엔진 공장 생산 감소, 철도 부설하러 생산물량이 일부 수출되기 때문.
+	building_steel_mills_throughput_mult = -0.05	#철강 생산 소폭 감소, 사유는 위와 같다.
+	unit_recovery_rate_add = 0.05	#군대 회복률 강화	
+}
+ist_modern_railway_profit2 = {	#철도운영이익
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	building_motor_industry_throughput_mult = -0.10	#엔진 공장 생산 감소, 철도 부설하러 생산물량이 일부 수출되기 때문.
+	building_steel_mills_throughput_mult = -0.10	#철강 생산 소폭 감소, 사유는 위와 같다.
+	unit_recovery_rate_add = 0.10	#군대 회복률 강화	
+}
+ist_modern_railway_profit3 = {	#철도운영이익
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	building_motor_industry_throughput_mult = -0.15	#엔진 공장 생산 감소, 철도 부설하러 생산물량이 일부 수출되기 때문.
+	building_steel_mills_throughput_mult = -0.15	#철강 생산 소폭 감소, 사유는 위와 같다.
+	unit_recovery_rate_add = 0.15	#군대 회복률 강화	
+}
+ist_modern_railway_profit4 = {	#철도운영이익
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	building_motor_industry_throughput_mult = -0.20	#엔진 공장 생산 감소, 철도 부설하러 생산물량이 일부 수출되기 때문.
+	building_steel_mills_throughput_mult = -0.20	#철강 생산 소폭 감소, 사유는 위와 같다.
+	unit_recovery_rate_add = 0.20	#군대 회복률 강화	
+}
+ist_modern_railway_profit5 = {	#철도운영이익
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	building_motor_industry_throughput_mult = -0.25	#엔진 공장 생산 감소, 철도 부설하러 생산물량이 일부 수출되기 때문.
+	building_steel_mills_throughput_mult = -0.25	#철강 생산 소폭 감소, 사유는 위와 같다.
+	unit_recovery_rate_add = 0.25	#군대 회복률 강화	
+}
+
+ist_modern_railway_toomany = {
+	icon = gfx/interface/icons/goods_icons/locomotives.dds
+	building_motor_industry_throughput_mult = -0.02	#엔진 공장 생산 감소, 철도 부설하러 생산물량이 일부 수출되기 때문.
+	building_steel_mills_throughput_mult = -0.02	#철강 생산 소폭 감소, 사유는 위와 같다.
+	unit_recovery_rate_add = 0.02	#군대 회복률 강화
+	#state_tax_waste_add = 0.01
+	country_prestige_add = 20
+	building_group_bg_ist_exploit_group_throughput_mult = 0.15
+}
+
+ist_modern_railway_toomany1 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_tax_waste_add = 0.03
+}
+ist_modern_railway_toomany2 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_tax_waste_add = 0.06
+}
+ist_modern_railway_toomany3 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_tax_waste_add = 0.09
+}
+ist_modern_railway_toomany4 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_tax_waste_add = 0.12
+}
+ist_modern_railway_toomany5 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_tax_waste_add = 0.15
+}
+
+ist_modern_railway_comp1 = {	#경쟁 비용
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_motor_industry_throughput_mult = -0.01	#엔진 공장 생산 감소, 시장 경쟁력을 위해 추가 비용이 소모되기 때문.
+	building_steel_mills_throughput_mult = -0.01	#철강 생산 소폭 감소, 사유는 위와 같다.
+	state_tax_waste_add = 0.01
+}
+ist_modern_railway_comp2 = {	#경쟁 비용2
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_motor_industry_throughput_mult = -0.10	#엔진 공장 생산 감소, 시장 경쟁력을 위해 추가 비용이 소모되기 때문.
+	building_steel_mills_throughput_mult = -0.10	#철강 생산 소폭 감소, 사유는 위와 같다.
+	state_tax_waste_add = 0.10
+}
+ist_modern_railway_comp3 = {	#경쟁 비용3
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_motor_industry_throughput_mult = -0.15	#엔진 공장 생산 감소, 시장 경쟁력을 위해 추가 비용이 소모되기 때문.
+	building_steel_mills_throughput_mult = -0.15	#철강 생산 소폭 감소, 사유는 위와 같다.
+	state_tax_waste_add = 0.15
+}
+
+ist_modern_railway_break = {	#국유화 여파
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	building_railway_throughput_mult = -0.50	#철도 효율 감소.
+	unit_defense_add = -10	#군대 방어 약화 	
+}
+
+ist_modern_railway_war_fail = {	#철도전쟁 실패
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+	interest_group_approval_add = -5
+}
+ist_modern_limited_war_up = {	#제한전
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+	country_diplomatic_play_maneuvers_add = -75
+}
+ist_modern_limited_war_down = {	#제한전
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+	country_diplomatic_play_maneuvers_add = -50
+}
+
+ist_modern_railway_war_loser = {	#철도전쟁 패배
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_negative.dds
+	#country_diplomatic_play_maneuvers_add = -10
+	country_prestige_mult = -0.05
+}
+#####
+ist_modern_forest_state = {	#해당 주 채벌권 매각됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_logging_camp_throughput_mult = -0.50
+}
+
+ist_modern_forest_state_absolute = {	#해당 주 채벌권 침탈됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_logging_camp_throughput_mult = -1
+}
+
+ist_modern_forest_state_down_credit1 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -680
+}
+ist_modern_forest_state_down_credit2 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -1600
+}
+ist_modern_forest_state_down_credit3 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -2750
+}
+ist_modern_forest_state_down_credit4 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -4120
+}
+ist_modern_forest_state_down_credit5 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -5730
+}
+
+ist_modern_forest_state_up_credit1 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 680
+}
+ist_modern_forest_state_up_credit2 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 1600
+}
+ist_modern_forest_state_up_credit3 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 2750
+}
+ist_modern_forest_state_up_credit4 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 4120
+}
+ist_modern_forest_state_up_credit5 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 5730
+}
+
+ist_modern_forest_profit1 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_logging_camp_throughput_mult = 0.01
+}
+ist_modern_forest_profit2 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_logging_camp_throughput_mult = 0.02
+}
+ist_modern_forest_profit3 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_logging_camp_throughput_mult = 0.03
+}
+ist_modern_forest_profit4 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_logging_camp_throughput_mult = 0.04
+}
+ist_modern_forest_profit5 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_logging_camp_throughput_mult = 0.05
+}
+
+ist_modern_forest_port_profit1 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_wood_throughput_mult = 0.5
+}
+ist_modern_forest_port_profit2 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_wood_throughput_mult = 1.0
+}
+ist_modern_forest_port_profit3 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_wood_throughput_mult = 2.0
+}
+ist_modern_forest_port_profit4 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_wood_throughput_mult = 3.5
+}
+ist_modern_forest_port_profit5 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_wood_throughput_mult = 5.0
+}
+ist_modern_forest_port_profit6 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_wood_throughput_mult = 6.5
+}
+ist_modern_forest_port_profit7 = {	#목재 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_wood_throughput_mult = 8.0
+}
+#####
+ist_modern_mining_state_down_credit1 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -680
+}
+ist_modern_mining_state_down_credit2 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -1600
+}
+ist_modern_mining_state_down_credit3 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -2750
+}
+ist_modern_mining_state_down_credit4 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -4120
+}
+ist_modern_mining_state_down_credit5 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -5730
+}
+
+ist_modern_mining_state_up_credit1 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 680
+}
+ist_modern_mining_state_up_credit2 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 1600
+}
+ist_modern_mining_state_up_credit3 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 2750
+}
+ist_modern_mining_state_up_credit4 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 4120
+}
+ist_modern_mining_state_up_credit5 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 5730
+}
+
+ist_modern_mining_coal_state = {	#해당 주 채굴권 매각됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_coal_mine_throughput_mult = -0.50
+}
+
+ist_modern_mining_coal_state_absolute = {	#해당 주 채굴권 침탈됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_coal_mine_throughput_mult = -1
+}
+
+ist_modern_coal_port_profit1 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_coal_throughput_mult = 0.5
+}
+ist_modern_coal_port_profit2 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_coal_throughput_mult = 1.0
+}
+ist_modern_coal_port_profit3 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_coal_throughput_mult = 2.0
+}
+ist_modern_coal_port_profit4 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_coal_throughput_mult = 3.5
+}
+ist_modern_coal_port_profit5 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_coal_throughput_mult = 5.0
+}
+ist_modern_coal_port_profit6 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_coal_throughput_mult = 6.5
+}
+ist_modern_coal_port_profit7 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_coal_throughput_mult = 8.0
+}
+##
+ist_modern_mining_iron_state = {	#해당 주 채굴권 매각됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_iron_mine_throughput_mult = -0.50
+}
+
+ist_modern_mining_iron_state_absolute = {	#해당 주 채굴권 침탈됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_iron_mine_throughput_mult = -1
+}
+
+ist_modern_iron_port_profit1 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_iron_throughput_mult = 0.5
+}
+ist_modern_iron_port_profit2 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_iron_throughput_mult = 1.0
+}
+ist_modern_iron_port_profit3 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_iron_throughput_mult = 2.0
+}
+ist_modern_iron_port_profit4 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_iron_throughput_mult = 3.5
+}
+ist_modern_iron_port_profit5 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_iron_throughput_mult = 5.0
+}
+ist_modern_iron_port_profit6 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_iron_throughput_mult = 6.5
+}
+ist_modern_iron_port_profit7 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_iron_throughput_mult = 8.0
+}
+##
+ist_modern_mining_sulfur_state = {	#해당 주 채굴권 매각됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_sulfur_mine_throughput_mult = -0.50
+}
+
+ist_modern_mining_sulfur_state_absolute = {	#해당 주 채굴권 침탈됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_sulfur_mine_throughput_mult = -1
+}
+
+ist_modern_sulfur_port_profit1 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_sulfur_throughput_mult = 0.5
+}
+ist_modern_sulfur_port_profit2 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_sulfur_throughput_mult = 1.0
+}
+ist_modern_sulfur_port_profit3 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_sulfur_throughput_mult = 2.0
+}
+ist_modern_sulfur_port_profit4 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_sulfur_throughput_mult = 3.5
+}
+ist_modern_sulfur_port_profit5 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_sulfur_throughput_mult = 5.0
+}
+ist_modern_sulfur_port_profit6 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_sulfur_throughput_mult = 6.5
+}
+ist_modern_sulfur_port_profit7 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_sulfur_throughput_mult = 8.0
+}
+##
+ist_modern_mining_gold_state = {	#해당 주 채굴권 매각됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_gold_mine_throughput_mult = -0.50
+}
+
+ist_modern_mining_gold_state_absolute = {	#해당 주 채굴권 침탈됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_gold_mine_throughput_mult = -1
+}
+
+ist_modern_gold_port_profit1 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_gold_throughput_mult = 1.0
+}
+ist_modern_gold_port_profit2 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_gold_throughput_mult = 2.0
+}
+ist_modern_gold_port_profit3 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_gold_throughput_mult = 3.0
+}
+ist_modern_gold_port_profit4 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_gold_throughput_mult = 4.0
+}
+ist_modern_gold_port_profit5 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_gold_throughput_mult = 5.0
+}
+ist_modern_gold_port_profit6 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_gold_throughput_mult = 6.0
+}
+ist_modern_gold_port_profit7 = {	#광산 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_gold_throughput_mult = 7.0
+}
+##### 생선+석유
+ist_modern_fishing_state_down_credit1 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -680
+}
+ist_modern_fishing_state_down_credit2 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -1600
+}
+ist_modern_fishing_state_down_credit3 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -2750
+}
+ist_modern_fishing_state_down_credit4 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -4120
+}
+ist_modern_fishing_state_down_credit5 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -5730
+}
+
+ist_modern_fishing_state_up_credit1 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 680
+}
+ist_modern_fishing_state_up_credit2 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 1600
+}
+ist_modern_fishing_state_up_credit3 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 2750
+}
+ist_modern_fishing_state_up_credit4 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 4120
+}
+ist_modern_fishing_state_up_credit5 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 5730
+}
+
+ist_modern_fishing_fish_state = {	#해당 주 어업권 매각됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_fishing_wharf_throughput_mult = -0.50
+	building_whaling_station_throughput_mult = -0.50
+}
+
+ist_modern_fishing_fish_state_absolute = {	#해당 주 어업권 침탈됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_fishing_wharf_throughput_mult = -1
+	building_whaling_station_throughput_mult = -1
+}
+
+ist_modern_fish_port_profit1 = {	#생선 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 0.5
+	building_input_clippers_mult = 0.5
+	building_output_fish_mult = 0.5
+	building_output_meat_mult = 0.5
+	building_output_oil_mult = 0.2
+}
+ist_modern_fish_port_profit2 = {	#생선 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 1.0
+	building_input_clippers_mult = 1.0
+	building_output_fish_mult = 1.0
+	building_output_meat_mult = 1.0
+	building_output_oil_mult = 0.4
+}
+ist_modern_fish_port_profit3 = {	#생선 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 1.5
+	building_input_clippers_mult = 1.5
+	building_output_fish_mult = 1.5
+	building_output_meat_mult = 1.5
+	building_output_oil_mult = 0.6
+}
+ist_modern_fish_port_profit4 = {	#생선 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 2.0
+	building_input_clippers_mult = 2.0
+	building_output_fish_mult = 2.0
+	building_output_meat_mult = 2.0
+	building_output_oil_mult = 0.8
+}
+ist_modern_fish_port_profit5 = {	#생선 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 2.5
+	building_input_clippers_mult = 2.5
+	building_output_fish_mult = 2.5
+	building_output_meat_mult = 2.5
+	building_output_oil_mult = 1.0
+}
+ist_modern_fish_port_profit6 = {	#생선 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 3.0
+	building_input_clippers_mult = 3.0
+	building_output_fish_mult = 3.0
+	building_output_meat_mult = 3.0
+	building_output_oil_mult = 1.0
+}
+ist_modern_fish_port_profit7 = {	#생선 이득
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 3.5
+	building_input_clippers_mult = 4.0
+	building_output_fish_mult = 4.0
+	building_output_meat_mult = 4.0
+	building_output_oil_mult = 1.0
+}
+##
+ist_modern_fishing_oil_state = {	#해당 주 시추권 매각됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_oil_rig_throughput_mult = -0.50
+}
+
+ist_modern_fishing_oil_state_absolute = {	#해당 주 시추권 침탈됨
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_oil_rig_throughput_mult = -1
+}
+
+ist_modern_maybe_oil_state = {	#석유잠재매장지
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+}
+ist_modern_maybe_oil_state_easy = {	#탐사과정 순탄함
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+}
+ist_modern_maybe_oil_state_base = {	#탐사과정 평범함
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+}
+ist_modern_maybe_oil_state_hard = {	#탐사과정 힘겨움
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+}
+ist_modern_maybe_oil_state_support = {	#탐사과정 지원
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	state_construction_mult = -0.05
+}
+ist_modern_maybe_oil_celeb = {	#가동식
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_exploit_port_fish_throughput_mult = 0.1
+	country_prestige_add = 20
+}
+
+ist_modern_oil_port_profit1 = {	#석유 이득 1렙부터
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 1.0
+	building_input_steamer_mult = 1.0
+	building_output_oil_mult = 1.0
+}
+ist_modern_oil_port_profit2 = {	#석유 이득 3렙부터
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 2.0
+	building_input_steamer_mult = 2.0
+	building_output_oil_mult = 2.0
+}
+ist_modern_oil_port_profit3 = {	#석유 이득 6렙부터
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 3.0
+	building_input_steamer_mult = 3.0
+	building_output_oil_mult = 3.5
+}
+ist_modern_oil_port_profit4 = {	#석유 이득 10렙부터
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 4.0
+	building_input_steamer_mult = 4.0
+	building_output_oil_mult = 5.0
+}
+ist_modern_oil_port_profit5 = {	#석유 이득 15렙부터
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 5.0
+	building_input_steamer_mult = 5.0
+	building_output_oil_mult = 7.0
+}
+ist_modern_oil_port_profit6 = {	#석유 이득 20렙부터
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 5.0
+	building_input_steamer_mult = 6.0
+	building_output_oil_mult = 9.0
+}
+ist_modern_oil_port_profit7 = {	#석유 이득 25렙부터
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 5.0
+	building_input_steamer_mult = 7.0
+	building_output_oil_mult = 12.0
+}
+ist_modern_oil_port_profit8 = {	#석유 이득 30렙부터
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	#building_exploit_port_fish_throughput_mult = 5.0
+	building_input_steamer_mult = 8.0
+	building_output_oil_mult = 15.0
+}
+#####
+ist_modern_credit_state_down_credit1 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -1370
+}
+ist_modern_credit_state_down_credit2 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -3200
+}
+ist_modern_credit_state_down_credit3 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -5500
+}
+ist_modern_credit_state_down_credit4 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -8250
+}
+ist_modern_credit_state_down_credit5 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -11450
+}
+ist_modern_credit_state_down_credit6 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_tax_income_add = -13750
+}
+
+ist_modern_credit_state_up_credit1 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 1370
+}
+ist_modern_credit_state_up_credit2 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 3200
+}
+ist_modern_credit_state_up_credit3 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 5500
+}
+ist_modern_credit_state_up_credit4 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 8250
+}
+ist_modern_credit_state_up_credit5 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 11450
+}
+ist_modern_credit_state_up_credit6 = {	#차관 상환
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_tax_income_add = 13750
+}
+#####
+ist_modern_dip_want_change = {	#외교부서 재배치
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	country_influence_mult = -0.2	#국가 영향력 수치 -20%
+}
+
+ist_modern_build_construct = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	state_construction_mult = -0.25
+}
+ist_modern_build_tech = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	country_society_weekly_innovation_mult = -0.25
+	country_military_weekly_innovation_mult = -0.25
+	country_production_weekly_innovation_mult = -0.25
+}
+
+ist_modern_modi_decision_infla = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_tax_waste_add = 0.05
+	country_legitimacy_base_add = -5
+	country_loan_interest_rate_add = 0.1
+	state_radicals_from_sol_change_mult = 0.05
+	state_standard_of_living_add = -1
+}
+ist_modern_modi_decision_dangbaek = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_tax_waste_add = 0.10
+	country_legitimacy_base_add = -10
+	country_loan_interest_rate_add = 0.1
+	state_radicals_from_sol_change_mult = 0.10
+	state_standard_of_living_add = -2
+}
+
+ist_modern_unsan_gold1 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_gold_mine_throughput_mult = -1
+}
+ist_modern_unsan_gold2 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_gold_mine_throughput_mult = -0.7
+}
+ist_modern_unsan_gold3 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_gold_mine_throughput_mult = -0.4
+}
+ist_modern_unsan_gold4 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_gold_mine_throughput_mult = -0.1
+}
+ist_modern_unsan_gold5 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	building_gold_mine_throughput_mult = 0.1
+}
+ist_modern_unsan_cost = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	state_construction_mult = -0.50
+}
+
+ist_modern_badplay_forest_fire = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1
+}
+ist_modern_badplay_bad_coin = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1
+}
+ist_modern_badplay_army_training1 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1	
+}
+ist_modern_badplay_army_training2 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	unit_defense_add = 5
+	unit_recovery_rate_add = 0.10	
+}
+ist_modern_badplay_sell_arms1 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1
+}
+ist_modern_badplay_sell_arms2 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_military_weekly_innovation_mult = 0.15	
+}
+ist_modern_badplay_exp_build1 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1
+}
+ist_modern_badplay_exp_build2 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	state_construction_mult = 0.10
+}
+ist_modern_badplay_add_agri = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1
+}
+ist_modern_badplay_sup_politic1 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1
+}
+ist_modern_badplay_sup_politic2 = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	country_legitimacy_base_add = 10
+	state_radicals_from_sol_change_mult = -0.10
+	political_movement_radicalism_mult = -0.10
+}

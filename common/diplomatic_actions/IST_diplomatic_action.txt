@@ -1,4 +1,7 @@
 ﻿ist_dip_railway = {	#철도 부설권
+	groups= {
+		general
+	}
 	requires_approval = no
 	should_notify_third_parties = no
 
@@ -157,7 +160,7 @@
 
 		}
 		
-		break_effect = {
+		manual_break_effect = {
 			#trigger_event = { id = ist_modern_events.6 }	#뉴우스	
 			if = {
 				limit = {
@@ -268,6 +271,9 @@
 }
 
 ist_dip_railway_war = {	#강제 연장된 철도 계약
+	groups= {
+		general
+	}
 	requires_approval = no
 	should_notify_third_parties = no
 	can_select = no
@@ -324,6 +330,9 @@ ist_dip_railway_war = {	#강제 연장된 철도 계약
 }
 
 ist_dip_mining = {	#광산 채굴권
+	groups= {
+		general
+	}
 	requires_approval = yes
 	should_notify_third_parties = no
 	can_select_to_break = no	#지장 찍으면 무르기 없기~
@@ -523,7 +532,7 @@ ist_dip_mining = {	#광산 채굴권
 		show_in_outliner = yes
 		recipient_pays_maintenance = yes		
 		
-		break_effect = {
+		manual_break_effect = {
 			if = {
 				limit = {
 					has_diplomatic_pact = {
@@ -615,6 +624,9 @@ ist_dip_mining = {	#광산 채굴권
 }
 
 ist_dip_forest = {	#산림 벌채권
+	groups= {
+		general
+	}
 	requires_approval = yes
 	should_notify_third_parties = no
 	can_select_to_break = no	#지장 찍으면 무르기 없기~
@@ -736,7 +748,7 @@ ist_dip_forest = {	#산림 벌채권
 		show_in_outliner = yes
 		recipient_pays_maintenance = yes		
 		
-		break_effect = {
+		manual_break_effect = {
 			if = {
 				limit = {
 					has_diplomatic_pact = {
@@ -792,6 +804,9 @@ ist_dip_forest = {	#산림 벌채권
 }
 
 ist_dip_fishing = {	#해양 어업권
+	groups= {
+		general
+	}
 	requires_approval = yes
 	should_notify_third_parties = no
 	can_select_to_break = no	#지장 찍으면 무르기 없기~
@@ -918,7 +933,7 @@ ist_dip_fishing = {	#해양 어업권
 		show_in_outliner = yes
 		recipient_pays_maintenance = yes		
 		
-		break_effect = {
+		manual_break_effect = {
 			if = {
 				limit = {
 					has_diplomatic_pact = {
@@ -994,6 +1009,9 @@ ist_dip_fishing = {	#해양 어업권
 }
 
 ist_dip_electric = {	#전기전선권
+	groups= {
+		general
+	}
 	requires_approval = no
 	should_notify_third_parties = no
 
@@ -1146,7 +1164,7 @@ ist_dip_electric = {	#전기전선권
 			}
 		}
 		
-		break_effect = {		
+		manual_break_effect = {		
 			change_relations = { country = scope:target_country value = -15 }	#실망함
 			add_treasury = -100000	#위약금 10만원
 			scope:target_country = {
@@ -1183,6 +1201,9 @@ ist_dip_electric = {	#전기전선권
 }
 
 ist_dip_espionage = {	#첩보
+	groups= {
+		general
+	}
 	requires_approval = no
 	should_notify_third_parties = no
 	show_effect_in_tooltip = yes
@@ -1245,6 +1266,9 @@ ist_dip_espionage = {	#첩보
 }
 
 ist_dip_credit = {	#긴급 단기 차관
+	groups= {
+		general
+	}
 	requires_approval = yes
 	should_notify_third_parties = no
 	can_select_to_break = no	#지장 찍으면 무르기 없기~
@@ -1322,6 +1346,9 @@ ist_dip_credit = {	#긴급 단기 차관
 }
 
 ist_dip_want = {	#찜해놓기~
+	groups= {
+		general
+	}
 	requires_approval = no
 	should_notify_third_parties = no
 	show_effect_in_tooltip = yes
@@ -1491,7 +1518,7 @@ ist_dip_want = {	#찜해놓기~
 			}		
 		}
 		
-		break_effect = {
+		manual_break_effect = {
 			add_modifier = {
 				name = ist_modern_dip_want_change
 				months = 6
@@ -1572,6 +1599,9 @@ ist_dip_want = {	#찜해놓기~
 	}
 }
 ist_dip_dont_want = {	#싫어요 가요 좀
+	groups= {
+		general
+	}
 	requires_approval = no
 	should_notify_third_parties = no
 	show_effect_in_tooltip = yes
@@ -1620,7 +1650,7 @@ ist_dip_dont_want = {	#싫어요 가요 좀
 			}
 		}
 		
-		#break_effect = {	
+		#manual_break_effect = {	
 		#}		
 		
 	}
@@ -1644,6 +1674,9 @@ ist_dip_dont_want = {	#싫어요 가요 좀
 }
 
 ist_dip_give_and_take = {	#대가를 요구하기
+	groups= {
+		general
+	}
 	requires_approval = no
 	should_notify_third_parties = no
 	show_effect_in_tooltip = yes
@@ -2000,6 +2033,9 @@ ist_dip_give_and_take = {	#대가를 요구하기
 }
 
 ist_dip_help_colony = {
+	groups= {
+		general
+	}
 	requires_approval = no
 	should_notify_third_parties = no
 
