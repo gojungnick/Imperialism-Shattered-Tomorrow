@@ -1,0 +1,20 @@
+IST_effect_save_ranking_var = { # n위 국가를 IST_var_rank_순위 명으로 저장
+    every_country = {
+        limit = { global_country_ranking = $ranking$ }
+        set_global_variable = { 
+            name = IST_var_rank_$ranking$
+            value = this # 국가 자체를 값에 넣음
+        }
+    }
+}
+
+IST_effect_save_ranking_var_1to8 = {
+    IST_effect_save_ranking_var = { ranking = 1 }
+    IST_effect_save_ranking_var = { ranking = 2 }
+    IST_effect_save_ranking_var = { ranking = 3 }
+    IST_effect_save_ranking_var = { ranking = 4 }
+    IST_effect_save_ranking_var = { ranking = 5 }
+    IST_effect_save_ranking_var = { ranking = 6 }
+    IST_effect_save_ranking_var = { ranking = 7 }
+    IST_effect_save_ranking_var = { ranking = 8 }
+}

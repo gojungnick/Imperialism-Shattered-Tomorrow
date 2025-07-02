@@ -1,0 +1,12 @@
+IST_influence_struggle_main_je = {
+    icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
+
+    group = je_group_influence_struggle
+
+    is_shown_when_inactive = {
+        ROOT = {
+            is_country_type = unrecognized 
+        }
+    }
+
+}

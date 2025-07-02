@@ -1,0 +1,29 @@
+### 국격을 정의하는 파일
+
+IST_trigger_national_dignity_lvl_1 = {
+	# 0 미만이 될 수 있으므로 하한을 정하지 않음
+	this.IST_value_national_dignity <= IST_trigger_national_dignity_lvl_1_threshold
+}
+
+IST_trigger_national_dignity_lvl_2 = {
+	this.IST_value_national_dignity > IST_trigger_national_dignity_lvl_1_threshold          #정수가 아닐 수도 있으므로 >
+	this.IST_value_national_dignity <= IST_trigger_national_dignity_lvl_2_threshold
+}
+
+IST_trigger_national_dignity_lvl_3 = {
+	this.IST_value_national_dignity > IST_trigger_national_dignity_lvl_2_threshold
+	this.IST_value_national_dignity <= IST_trigger_national_dignity_lvl_3_threshold
+}
+
+IST_trigger_national_dignity_lvl_4 = {
+	this.IST_value_national_dignity > IST_trigger_national_dignity_lvl_3_threshold
+	this.IST_value_national_dignity <= IST_trigger_national_dignity_lvl_4_threshold
+}
+
+IST_trigger_national_dignity_lvl_5 = {
+	this.IST_value_national_dignity > IST_trigger_national_dignity_lvl_4_threshold
+	# 200 이상이 될 수 있으므로 상한은 정하지 않음
+}
+
+
+### script_values에서 계산되는 변수임

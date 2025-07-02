@@ -1,0 +1,298 @@
+IST_value_national_dignity = {
+    value = 0
+    if = {
+        limit = {
+            is_country_type = unrecognized
+        }
+        add = this.prestige 
+        multiply = 0.15
+    }
+    else_if = {
+        limit = {
+            is_subject = yes
+        }
+        add = this.prestige 
+        multiply = 0.15
+    }
+    else = {
+        add = this.prestige
+    }
+    multiply = 0.78           # 위신 계수 0.6
+
+    add = {
+        if = {
+            limit = {
+                NOT = { this.global_country_ranking = 1 }  # 내가 1위일 경우 이 산술식을 제외함
+            }
+            add = global_var:IST_var_rank_1.prestige   # 1위의 위신을 불러옴
+            multiply = IST_value_relationship_with_rank_1 # 내 관계도를 곱함 (0~100 사이에 위치함; if-else를 통해 양수화 하였으므로)
+            multiply = 0.01 # 0~100 -> 0~1사이로 위치시킴
+            multiply = 0.1 #이 위신 값에 10을 나눔
+        }
+    }
+
+    add = {
+        if = {
+            limit = {
+                NOT = { this.global_country_ranking = 2 }  
+            }
+            add = global_var:IST_var_rank_2.prestige   
+            multiply = IST_value_relationship_with_rank_2 
+            multiply = 0.01 
+            multiply = 0.2 #이 위신 값에 20을 나눔 (2위 보정)
+        }
+    }
+
+    add = {
+        if = {
+            limit = {
+                NOT = { this.global_country_ranking = 3 }  
+            }
+            add = global_var:IST_var_rank_3.prestige   
+            multiply = IST_value_relationship_with_rank_3 
+            multiply = 0.01 
+            multiply = 0.3 
+        }
+    }
+
+    add = {
+        if = {
+            limit = {
+                NOT = { this.global_country_ranking = 4 }  
+            }
+            add = global_var:IST_var_rank_4.prestige   
+            multiply = IST_value_relationship_with_rank_4 
+            multiply = 0.01 
+            multiply = 0.4 
+        }
+    }
+
+    add = {
+        if = {
+            limit = {
+                NOT = { this.global_country_ranking = 5 }  
+            }
+            add = global_var:IST_var_rank_5.prestige   
+            multiply = IST_value_relationship_with_rank_5 
+            multiply = 0.01 
+            multiply = 0.5 
+        }
+    }
+
+    add = {
+        if = {
+            limit = {
+                NOT = { this.global_country_ranking = 6 }  
+            }
+            add = global_var:IST_var_rank_6.prestige   
+            multiply = IST_value_relationship_with_rank_6 
+            multiply = 0.01 
+            multiply = 0.6 
+        }
+    }
+
+    add = {
+        if = {
+            limit = {
+                NOT = { this.global_country_ranking = 7 }  
+            }
+            add = global_var:IST_var_rank_7.prestige   
+            multiply = IST_value_relationship_with_rank_7 
+            multiply = 0.01 
+            multiply = 0.7 
+        }
+    }
+
+    add = {
+        if = {
+            limit = {
+                NOT = { this.global_country_ranking = 8 }  
+            }
+            add = global_var:IST_var_rank_8.prestige   
+            multiply = IST_value_relationship_with_rank_8 
+            multiply = 0.01 
+            multiply = 0.8 
+        }
+    }
+    
+    if = {
+        limit = {
+            this.literacy_rate >= 0.3
+        }
+        divide = 1.13
+    }
+    else_if = {
+        limit = {
+            this.literacy_rate <= 0.3
+            this.literacy_rate > 0.2
+        }
+        divide = 1.18
+    }
+    else_if = {
+        limit = {
+            this.literacy_rate <= 0.2
+            this.literacy_rate > 0.15
+        }
+        divide = 1.45
+    }
+    else_if = {
+        limit = {
+            this.literacy_rate <= 0.15
+            this.literacy_rate > 0.05
+        }
+        divide = 1.98
+    }
+    else_if = {
+        limit = {
+            this.literacy_rate <= 0.05
+        }
+        divide = 2.64
+    }
+}
+
+
+IST_value_relationship_with_rank_1 = {
+    value = 0 
+
+    if = { # 양수 일경우 그대로 통과
+        limit = {
+            global_var:IST_var_rank_1.relations:root >= 0
+        }
+        add = global_var:IST_var_rank_1.relations:root 
+    }
+    else = { # 음수일 경우 양수로 만듦
+        subtract = global_var:IST_var_rank_1.relations:root
+    }
+}
+
+IST_value_relationship_with_rank_2 = {
+    value = 0 
+    if = {
+        limit = {
+            global_var:IST_var_rank_2.relations:root >= 0
+        }
+        add = global_var:IST_var_rank_2.relations:root 
+    }
+    else = {
+        subtract = global_var:IST_var_rank_2.relations:root
+    }
+}
+
+IST_value_relationship_with_rank_3 = {
+    value = 0 
+    if = {
+        limit = {
+            global_var:IST_var_rank_3.relations:root >= 0
+        }
+        add = global_var:IST_var_rank_3.relations:root 
+    }
+    else = {
+        subtract = global_var:IST_var_rank_3.relations:root
+    }
+}
+
+IST_value_relationship_with_rank_4 = {
+    value = 0 
+    if = {
+        limit = {
+            global_var:IST_var_rank_4.relations:root >= 0
+        }
+        add = global_var:IST_var_rank_4.relations:root 
+    }
+    else = {
+        subtract = global_var:IST_var_rank_4.relations:root
+    }
+}
+
+IST_value_relationship_with_rank_5 = {
+    value = 0 
+    if = {
+        limit = {
+            global_var:IST_var_rank_5.relations:root >= 0
+        }
+        add = global_var:IST_var_rank_5.relations:root 
+    }
+    else = {
+        subtract = global_var:IST_var_rank_5.relations:root
+    }
+}
+
+
+### 아래 있는 IF문은, 6위 이하가 열강이 아닐 때는 계산에 포함시키지 않는 다는 의미
+### 5위 이상도 열강이 아닐 수 있지만, 극히 드문 경우이므로 넣지 않음
+
+IST_value_relationship_with_rank_6 = {
+    value = 0 
+    if = {
+        limit = {
+            global_var:IST_var_rank_6.country_rank = rank_value:great_power
+        }
+        if = {
+            limit = {
+                global_var:IST_var_rank_6.relations:root >= 0
+            }
+            add = global_var:IST_var_rank_6.relations:root 
+        }
+        else = {
+            subtract = global_var:IST_var_rank_6.relations:root
+        }
+    }
+}
+
+IST_value_relationship_with_rank_7 = {
+    value = 0 
+
+    if = {
+        limit = {
+            global_var:IST_var_rank_7.country_rank = rank_value:great_power
+        }
+        if = {
+            limit = {
+                global_var:IST_var_rank_7.relations:root >= 0
+            }
+            add = global_var:IST_var_rank_7.relations:root 
+        }
+        else = {
+            subtract = global_var:IST_var_rank_7.relations:root
+        } 
+    }
+}
+
+IST_value_relationship_with_rank_8 = {
+    value = 0 
+    if = {
+        limit = {
+            global_var:IST_var_rank_8.country_rank = rank_value:great_power
+        }
+        if = {
+            limit = {
+                global_var:IST_var_rank_8.relations:root >= 0
+            }
+            add = global_var:IST_var_rank_8.relations:root 
+        }
+        else = {
+            subtract = global_var:IST_var_rank_8.relations:root
+        }
+    }
+}
+
+
+IST_trigger_national_dignity_lvl_4_threshold = {
+    value = global_var:IST_var_rank_1.IST_value_national_dignity
+    multiply = 0.4
+}
+
+IST_trigger_national_dignity_lvl_3_threshold = {
+    value = global_var:IST_var_rank_1.IST_value_national_dignity
+    multiply = 0.35
+}
+
+IST_trigger_national_dignity_lvl_2_threshold = {
+    value = global_var:IST_var_rank_1.IST_value_national_dignity
+    multiply = 0.3
+}
+
+IST_trigger_national_dignity_lvl_1_threshold = {
+    value = global_var:IST_var_rank_1.IST_value_national_dignity
+    multiply = 0.25
+}
