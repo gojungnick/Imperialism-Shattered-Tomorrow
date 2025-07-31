@@ -1,0 +1,189 @@
+burden_of_civilization_progress_bar = {
+	name = "burden_of_civilization_progress_bar"
+	desc = "burden_of_civilization_progress_bar_desc"
+
+	monthly_progress = {
+		if = {
+			limit = {
+				owner = {
+					any_scope_state = {
+						is_incorporated = yes
+						loyalty >= 0.10
+					}
+				}
+			}
+			owner = {
+				subtract = {
+					desc = "communism_progress_from_loyalists_tt"
+					every_scope_state = {
+						limit = {
+							is_incorporated = yes
+							loyalty >= 0.10
+						}
+						add = this.loyalty
+					}
+					divide = num_incorporated_states
+					multiply = 3 # Maxes out at -3
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_political_movement = {
+					OR = {
+						is_political_movement_type = movement_socialist
+						is_political_movement_type = movement_communist
+						is_political_movement_type = movement_anarchist
+						is_political_movement_type = movement_nihilist
+					}
+				}
+			}
+			add = {
+				desc = "communism_progress_from_movement_support_tt"
+				every_political_movement = {
+					limit = {
+						OR = {
+							is_political_movement_type = movement_socialist
+							is_political_movement_type = movement_communist
+							is_political_movement_type = movement_anarchist
+							is_political_movement_type = movement_nihilist
+						}
+					}
+					add = {
+						value = this.political_movement_support
+						multiply = 10
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_political_movement = {
+					OR = {
+						is_political_movement_type = movement_socialist
+						is_political_movement_type = movement_communist
+						is_political_movement_type = movement_anarchist
+						is_political_movement_type = movement_nihilist
+					}
+				}
+			}
+			add = {
+				desc = "communism_progress_from_movement_activism_tt"
+				every_political_movement = {
+					limit = {
+						OR = {
+							is_political_movement_type = movement_socialist
+							is_political_movement_type = movement_communist
+							is_political_movement_type = movement_anarchist
+							is_political_movement_type = movement_nihilist
+						}
+					}
+					add = {
+						value = this.political_movement_radicalism
+						multiply = 5
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				owner = {
+					any_scope_character = {
+						OR = {
+							has_ideology = ideology:ideology_communist
+							has_ideology = ideology:ideology_vanguardist
+							has_ideology = ideology:ideology_anarchist
+							has_ideology = ideology:ideology_nihilist
+							has_ideology = ideology:ideology_utopian
+						}
+					}
+				}
+			}
+			add = {
+				desc = "communism_progress_from_characters_tt"
+				owner = {
+					every_scope_character = {
+						limit = {
+							OR = {
+								has_ideology = ideology:ideology_communist
+								has_ideology = ideology:ideology_vanguardist
+								has_ideology = ideology:ideology_anarchist
+								has_ideology = ideology:ideology_nihilist
+								has_ideology = ideology:ideology_utopian
+							}
+						}
+						add = this.popularity
+						divide = 100
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				owner = {
+					any_interest_group = {
+						OR = {
+							law_stance = {
+								law = law_type:law_council_republic
+								value = approve
+							}
+							law_stance = {
+								law = law_type:law_council_republic
+								value = strongly_approve
+							}
+						}
+					}
+				}
+			}
+			add = {
+				desc = "communism_progress_from_interest_groups_tt"
+				owner = {
+					every_interest_group = {
+						limit = {
+							OR = { # There is a very good reason for this, and that's because of the 'count' value causing problems with a greater-than.
+								law_stance = {
+									law = law_type:law_council_republic
+									value = approve
+								}
+								law_stance = {
+									law = law_type:law_council_republic
+									value = strongly_approve
+								}
+							}
+						}
+						add = this.ig_clout
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = owner.var:communism_progress_from_laws
+				NOT = {
+					owner.var:communism_progress_from_laws = 0
+				}
+			}
+			add = {
+				desc = "communism_progress_from_laws_tt"
+				value = owner.var:communism_progress_from_laws
+			}
+		}
+		if = {
+			limit = {
+				exists = owner.var:communism_progress_var_add
+				NOT = {
+					owner.var:communism_progress_var_add = 0
+				}
+			}
+			add = {
+				desc = "communism_progress_from_events_tt"
+				value = owner.var:communism_progress_var_add
+			}
+		}
+	}
+
+	start_value = 5000
+	min_value = 0
+	max_value = 20000
+
+ }

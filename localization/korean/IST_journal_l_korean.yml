@@ -1,0 +1,14 @@
+﻿l_korean:
+
+je_group_influence_struggle:0 "영향력 줄다리기"
+je_group_westernization:0 "근대화"
+je_group_backlash:0 "반동주의"
+je_group_imperialism:0 "제국주의적 야망"
+je_group_intelligence:0 "외교 및 첩보"
+
+je_imperialism:0 "제국주의"
+burden_of_civilization_progress_bar_at_zero_tt:0 "문명의 짐 수치가 0에 도달함."
+fall_of_imperialists_tt:0 "우리는 모든 식민지와 해외 영토를 상실할 것입니다."
+
+burden_of_civilization_progress_bar:0 "문명의 짐"
+burden_of_civilization_progress_bar_desc:0 "진행도: #v [JournalEntry.GetCurrentBarProgress(ScriptedProgressBar.Self)|%]#! ([JournalEntry.GetCurrentBarValue(ScriptedProgressBar.Self)|1]/100)" #커스텀 로컬 먹여서 문구 달라지게

@@ -1,0 +1,122 @@
+je_imperialism = {
+    group = je_group_imperialism
+
+    is_shown_when_inactive = {
+		is_country_type = recognized
+	}
+
+	possible = {
+		calc_true_if = {
+            amount >= 3
+            OR = {
+                has_law = law_type:law_colonial_exploitation
+                has_law = law_type:law_colonial_resettlement
+            }
+            OR = {
+                AND = {
+                    has_technology_researched = civilizing_mission
+                    navy_size >= 15
+                }
+                navy_size >= 35
+            }
+            OR = {
+                AND = {
+                   country_rank >= rank_value:major_power
+                   techs_researched >= 50
+                }
+                techs_researched >= 60
+            }
+            OR = {
+                AND = {
+                    any_scope_state = {
+                        NOT = { is_homeland_of_country_cultures = root } 
+                        count >= 5
+                    }
+                    num_subjects >= 1
+                }
+                AND = {
+                    any_scope_state = { 
+                        NOT = { is_homeland_of_country_cultures = root } 
+                        count >= 3
+                    }
+                    num_subjects >= 2
+                }
+                num_subjects >= 5
+            }
+            OR = {
+                any_interest_group = {
+                    OR = {
+                        law_stance = {
+                            law = law_type:law_colonial_exploitation
+                            value = approve
+                        }
+                        law_stance = {
+                            law = law_type:law_colonial_exploitation
+                            value = strongly_approve
+                        }
+                    }
+                    count >= 3
+                }
+                any_interest_group = {
+                    OR = {
+                        law_stance = {
+                            law = law_type:law_colonial_resettlement
+                            value = approve
+                        }
+                        law_stance = {
+                            law = law_type:law_colonial_resettlement
+                            value = strongly_approve
+                        }
+                    }
+                    count >= 3
+                }
+            }
+        }
+    }
+
+    scripted_progress_bar = burden_of_civilization_progress_bar
+
+
+    immediate = {
+        root = {
+            save_scope_as = root_country
+        }
+        set_burden_of_civilization_vars = yes
+        trigger_event = { #튜토리얼급 활성화 이벤트
+            id = imperialism.1
+            popup = yes
+        }
+	}
+
+    on_weekly_pulse = {
+		effect = {
+			calculate_burden_of_civilization_progress = yes
+		}
+	}
+
+    on_monthly_pulse = {
+		random_events = {
+			200 = 0
+		}
+		effect = {
+			calculate_burden_of_civilization_progress = yes
+		}
+	}
+
+    fail = {
+		custom_tooltip = {
+			text = burden_of_civilization_progress_bar_at_zero_tt
+			scope:journal_entry = {
+				"scripted_bar_progress(burden_of_civilization)" <= 0
+			}
+		}
+	}
+
+	on_fail = {
+		set_variable = IST_var_fall_of_imperialists
+		trigger_event = { id = imperialism.2 popup = yes }
+		custom_tooltip = fall_of_imperialists_tt
+	}
+
+    should_be_pinned_by_default = yes
+}
