@@ -1,0 +1,11 @@
+﻿l_korean:
+
+##이 아래는 칙령 및 디시전을 위한 로컬 텍스트 공간입니다.
+
+##주 칙령들
+decree_IST_internal_stabilization:0 "핵심지 안정화"
+decree_IST_internal_stabilization_desc:0 "우리 #V 수도#!가 속해있는 #V 범전략지역#! 내 영토에서만 발동 가능합니다.\n발동하려면 #V 수도 영향권#!의 보유 영향력이 #V 100 이상#!이어야 합니다.\n매달 #P 1#! 수도 #V 영향권 영향력#!이 칙령 유지비용으로써 소모됩니다."
+
+##디시전들
+IST_modern_inflation:0 "한시적 화폐가치 절하"
+IST_modern_inflation_desc:1 "가치가 어느정도 보장되는 대규모의 화폐를 발행하여 경제위기에 일시적인 처방을 내립니다.\nGDP의 3%+100k 파운드 만큼의 주조이익을 얻습니다.<20년마다 1회씩 한도>"

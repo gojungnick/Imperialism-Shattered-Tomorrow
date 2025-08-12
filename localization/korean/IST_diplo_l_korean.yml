@@ -1,0 +1,19 @@
+﻿l_korean:
+
+##이 아래는 각종 외교관련 시스템들의 로컬 텍스트를 위한 공간입니다.
+
+IST_DIPLOMATIC_ACCEPTANCE_TOO_SUB:0 "이미 너무 많이 진행된 예속화"
+
+dp_railway_war:0 "철도부설권 계약 강제 연장"
+dp_railway_war_tooltip:0 "무력을 통해 계약서 상에 명시된 정당한 권리를 주장하여 철도사업을 8년 연장합니다."
+
+IST_dip_railway:0 "「철도부설권 매각」"
+IST_dip_railway_desc:0 "상대국이 자국에서 철도사업을 벌일수 있도록 철도부설권을 매각합니다."
+IST_dip_railway_pact_desc:0 "우리는 해당국과 계약을 맺어 철도부설권을 매각했습니다. 값싸게 철도를 건설할수 있게 되었지만, 그 운용수익은 상당수는 열강이 거두어 갈 것입니다..."
+IST_dip_railway_war:0 "「강제 연장된 철도계약」"
+IST_dip_railway_war_pact_desc:0 "우리는 해당국에 굴복하여 강제로 8년간 계약을 연장했습니다..."
+
+IST_dip_railway_action_notification_name:0 "철도 부설 계약 체결됨"
+IST_dip_railway_action_notification_break_name:0 "국유화된 철도자산"
+IST_dip_railway_action_notification_desc:0 "철도 부설권이 매매되었습니다."
+IST_dip_railway_action_notification_break_desc:0 "타국과의 철도 사업 계약이 파기되었으며, 철도자산이 국유화 되었습니다."

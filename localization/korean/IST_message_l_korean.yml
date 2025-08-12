@@ -1,0 +1,9 @@
+﻿l_korean:
+
+##이 아래는 인게임 메세지 및 알림등에 사용될 로컬 텍스트를 위한 공간입니다.
+
+IST_message_dip_notification_group: "IST 외교 메세지 알림"
+
+notification_IST_message_dip_obli_coal_tooltip: "특약 거래"
+notification_IST_message_dip_obli_coal_name: "#V 특약 청구 :#! #N 채굴권 침탈됨!#!"
+notification_IST_message_dip_obli_coal_desc: "특약을 매개로 한 외교적 압력에 굴복함.\n범주 : 자원이권 침탈\n방향 : 대국 → 소국\n세부 사항 : 석탄 채굴권 매매 계약에 서명함"

@@ -1,0 +1,9 @@
+﻿l_korean:
+
+##이 아래는 이벤트문에 사용될 로컬 텍스트를 위한 공간입니다.
+
+IST_mainline.999.t:0 "위대한 내일"
+IST_mainline.999.d:0 "문명화의 의무"
+IST_mainline.999.f:3 "일만년간, 이 지구상의 각기 다른 장소에서 수많은 문명들이 흥망성쇠의 흐름을 타며 피고 지었습니다.\n\n그러나 이제 오늘날, 전 세계는 하나로 연결되어 그 어느때보다 강한 결속을 느끼고 있습니다.\n\n[SCOPE.sCountry('IST_first_civil_country').GetName]의 사람들은 이 시대의 흐름을 타고 강력한 의무감으로 무장하기 시작했습니다.\n\n바야흐로, 문명화 사명의 탄생입니다."
+IST_mainline.999.oa:0 "빛이 너무나도 밝게 내리쬐어, 어둠보다 고통스러워 진다면?"
+IST_mainline.999.ob:0 "기뻐하라 [SCOPE.sCountry('IST_first_civil_country').GetName]의 시민들이여!\n그대들이 인류 계몽의 최전선일지니!"

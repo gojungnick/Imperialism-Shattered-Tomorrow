@@ -1,2 +1,2 @@
-namespace = imperialism
+namespace = IST_imperialism
 

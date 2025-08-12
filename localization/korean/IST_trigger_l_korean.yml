@@ -1,0 +1,10 @@
+﻿l_korean:
+
+##이 아래는 인게임상의 각종 일반 트리거 및 툴팁 텍스트들을 위한 공간입니다.
+
+##툴팁들
+IST_WIP_TOOLTIP:0 "작업중..."
+
+##트리거들
+IST_dip_railway_war_effect_desc_third: "[COUNTRY.GetName](이)가 [AddTextIf(ObjectsEqual(GetMetaPlayer.GetPlayedOrObservedCountry.Self, TARGET_COUNTRY.Self),TARGET_COUNTRY.GetNameNoFlag)][AddTextIf(Not(ObjectsEqual(GetMetaPlayer.GetPlayedOrObservedCountry.Self, TARGET_COUNTRY.Self)),TARGET_COUNTRY.GetName)]에게 #V 「강제 연장된 철도계약」#! 을 체결당함"
+IST_dip_railway_war_effect_desc_global: "#V 「강제 연장된 철도계약」#! 체결당함"

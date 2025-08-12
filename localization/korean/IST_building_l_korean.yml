@@ -1,0 +1,14 @@
+﻿l_korean:
+
+##이 아래는 각종 건물 및 PM관련 로컬 텍스트를 위한 공간입니다.
+
+building_exploit_port_coal:0 "해외 석탄개발 주식회사"
+pmg_exploit_port_coal:0 "수입석탄 하역장"
+pm_lia_coal:0 "석탄 하역장"
+
+pmg_IST_mod_license_equipment_coal_mine:0 "채굴 설비 라이센스"
+
+pm_IST_picks_and_shovels_building_coal_mine: "채굴기술 지원없음"
+pm_IST_atmospheric_engine_pump_building_coal_mine: "대기압 엔진 펌프기술 지원"
+pm_IST_condensing_engine_pump_building_coal_mine: "복수식 엔진 펌프기술 지원"
+pm_IST_condensing_engine_pump_up_building_coal_mine: "복수식 엔진 펌프 업그레이드 지원"
