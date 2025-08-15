@@ -1,0 +1,52 @@
+﻿on_monthly_pulse_country = {
+	on_actions = { 
+		IST_monthly_pulse_treaty_article
+}
+}
+IST_monthly_pulse_treaty_article = {
+	effect = {
+		if = {
+			#밑에 코드는 포교 조항이 있을때만 작동하게 해놨습니다
+			limit = {
+			  any_scope_treaty = {
+			    any_scope_article = {
+			  	has_type = allow_missinoary
+				target_country = ROOT
+			 }
+		     }
+			}
+			random_scope_treaty = {
+			 limit = {
+				binds = root
+				any_scope_article = {
+			  	has_type = allow_missinoary
+				target_country = ROOT
+			 }
+			}
+			random_scope_article = {
+				limit = {
+					has_type = allow_missinoary
+					target_country = root
+				}
+				source_country.religion = { save_scope_as = missionary_target_religion } 
+			}
+		}
+		   ROOT = {
+				random_scope_pop = {
+					limit = {
+						size > 100
+						NOT = {
+							religion = scope:missionary_target_religion # 포교 대상 종교와 같은 종교가 아님
+						}
+					}
+					change_pop_religion = { target = scope:missionary_target_religion value = 0.05 } # 랜덤팝의 5%가 해당 종교로 개종함
+				}
+			}
+			post_notification = monthly_missionary_message # 포교 디버그 메시지 
+
+		}
+
+	}
+		
+
+}

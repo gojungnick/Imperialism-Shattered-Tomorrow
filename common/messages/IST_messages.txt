@@ -1,0 +1,7 @@
+﻿monthly_missionary_message = {
+    type = country
+    group = "headlines_minor_group"
+    notification_type = feed
+    days = 28
+    color = neutral
+}
