@@ -30,14 +30,13 @@ allow_missinoary = {
 	}
 
 	possible = {
+      root = {
+			NOT = { country_has_state_religion = scope:other_country.religion }
+		}
 	}
 
 	requirement_to_maintain = {
-		trigger = {
-			scope:target_country = {
-				NOT = { country_has_state_religion = scope:source_country.religion }
-			}
-		}
+		
 	}
 
 	can_ratify = {
